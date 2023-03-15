@@ -1,0 +1,14 @@
+.links {
+    display: flex;
+    flex-direction: column;
+    align-items: start;
+
+}
+
+.link {
+    margin-bottom: 10px;
+}
+
+.link:last-child {
+    margin-bottom: 0;
+}
