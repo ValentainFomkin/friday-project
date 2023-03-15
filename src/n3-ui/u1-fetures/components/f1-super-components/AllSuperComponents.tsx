@@ -8,7 +8,7 @@ export const AllSuperComponents = () => {
         <div>
             <SuperInputText/>
             <SuperCheckbox/>
-            <SuperButton/>
+            <SuperButton xType={'secondary'}>Hello</SuperButton>
         </div>
     );
 };
