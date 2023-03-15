@@ -6,6 +6,9 @@ export const NavBar = () => {
     return (
         <div className={s.links}>
             <div className={s.link}>
+                <Link to={'/'}>MAIN</Link>
+            </div>
+            <div className={s.link}>
                 <Link to={'/login'}>Login</Link>
             </div>
             <div className={s.link}>

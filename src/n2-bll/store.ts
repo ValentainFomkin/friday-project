@@ -1,11 +1,11 @@
 import {AnyAction, applyMiddleware, combineReducers, legacy_createStore} from "redux";
 import thunkMiddleware, {ThunkDispatch} from 'redux-thunk'
 import {TypedUseSelectorHook, useDispatch, useSelector} from "react-redux";
-import {AppReducer} from "./app-reducer";
+import {appReducer} from "./app-reducer";
 
 
 const rootReducer = combineReducers({
-    app: AppReducer
+    app: appReducer
 })
 
 export const store = legacy_createStore(rootReducer, applyMiddleware(thunkMiddleware))
