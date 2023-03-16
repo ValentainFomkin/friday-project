@@ -1,6 +1,6 @@
 import React, {useEffect} from 'react';
 import {useAppDispatch, useAppSelector} from "../../../../n2-bll/store";
-import {isLogOutTC} from "../f2-login/login-reducer";
+import {isLogOutTC} from "../../../../n2-bll/login-reducer";
 import {Navigate} from "react-router-dom";
 
 export const Profile = () => {

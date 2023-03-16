@@ -1,6 +1,6 @@
-import {authAPI, LoginParamsType} from "../../../../n1-dall/auth-api";
+import {authAPI, LoginParamsType} from "../n1-dall/auth-api";
 import {Dispatch} from "redux";
-import {setAppErrorAC, setAppStatusAC} from "../../../../n2-bll/app-reducer";
+import {setAppErrorAC, setAppStatusAC} from "./app-reducer";
 import {AxiosError} from "axios";
 
 

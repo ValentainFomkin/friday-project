@@ -2,8 +2,8 @@ import {AnyAction, applyMiddleware, combineReducers, legacy_createStore} from "r
 import thunkMiddleware, {ThunkDispatch} from 'redux-thunk'
 import {TypedUseSelectorHook, useDispatch, useSelector} from "react-redux";
 import {appReducer} from "./app-reducer";
-import {registerReducer} from "../n3-ui/u1-fetures/components/f3-registration/register-reducer";
-import {loginReducer} from "../n3-ui/u1-fetures/components/f2-login/login-reducer";
+import {registerReducer} from "./register-reducer";
+import {loginReducer} from "./login-reducer";
 
 
 const rootReducer = combineReducers({

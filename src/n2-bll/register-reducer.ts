@@ -1,7 +1,7 @@
-import {authAPI, RegisterType} from "../../../../n1-dall/auth-api";
+import {authAPI, RegisterType} from "../n1-dall/auth-api";
 import {Dispatch} from "redux";
 import {AxiosError} from "axios";
-import {setAppErrorAC, setAppStatusAC} from "../../../../n2-bll/app-reducer";
+import {setAppErrorAC, setAppStatusAC} from "./app-reducer";
 
 
 const initialState: InitialStateType = {
@@ -41,7 +41,6 @@ export const isRegisterTC = (data: RegisterType) => (dispatch: Dispatch) => {
 // types
 export type InitialStateType = {
     isRegister: boolean
-
 }
 export type IsRegisterAC = ReturnType<typeof isRegisterAC>
 export type ActionType = IsRegisterAC

@@ -1,0 +1,49 @@
+.paper {
+    display: flex;
+    flex-direction: column;
+    height: 500px;
+    width: 350px;
+    padding: 30px 40px;
+}
+
+
+.email {
+    margin-bottom: 20px;
+}
+
+.password {
+    margin-bottom: 10px;
+}
+
+.formControlLabel {
+    text-align: left;
+    margin-bottom: 10px;
+}
+
+.checkbox {
+}
+
+.forgotPassword {
+    font-weight: 500;
+    text-align: right;
+    margin-bottom: 60px;
+}
+
+.buttonSubmit {
+    border-radius: 20px;
+    margin-bottom: 60px;
+}
+
+.typographyHaveAcc {
+    font-size: 14px;
+    font-weight: 600;
+    opacity: 70%;
+    margin-bottom: 15px;
+
+}
+
+.singUp a {
+    color: #0080FF;
+    font-weight: bold;
+
+}

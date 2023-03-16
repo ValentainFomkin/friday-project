@@ -2,13 +2,12 @@ import React from 'react';
 import {useAppDispatch, useAppSelector} from "../../../../n2-bll/store";
 import {useFormik} from "formik";
 import Grid from "@mui/material/Grid";
-import {Navigate} from "react-router-dom";
-import FormControl from "@mui/material/FormControl";
-import {Checkbox, FormControlLabel, FormLabel} from "@mui/material";
-import FormGroup from "@mui/material/FormGroup";
+import {Link, Navigate} from "react-router-dom";
+import {Checkbox, FormControlLabel, Paper, Typography} from "@mui/material";
 import TextField from "@mui/material/TextField";
 import Button from "@mui/material/Button";
-import {isLoggedInTC} from "./login-reducer";
+import {isLoggedInTC} from "../../../../n2-bll/login-reducer";
+import s from './Login.module.css'
 
 type FormikErrorType = {
     email?: string
@@ -57,54 +56,77 @@ export const Login = () => {
     return <Grid container justifyContent={'center'}>
         <Grid item justifyContent={'center'}>
             <form onSubmit={formik.handleSubmit}>
-                <FormControl>
-                    <FormLabel>
-                        <p>To log in get registered
-                            <a href={'https://social-network.samuraijs.com/'}
-                               target={'_blank'}> here
-                            </a>
-                        </p>
-                        <p>or use common test account credentials:</p>
-                        <p>Email: free@samuraijs.com</p>
-                        <p>Password: free</p>
-                    </FormLabel>
-                    <FormGroup>
-                        <TextField type="email"
-                                   label="Email"
-                                   margin="normal"
-                                   {...formik.getFieldProps('email')}
-                                   onBlur={formik.handleBlur}
+                <Paper className={s.paper}
+                       variant={'outlined'}
+                       square
+                >
+                    <Typography component={'h2'}
+                                variant={'h4'}
+                                marginBottom={'25px'}
+                                fontWeight={'600'}
+                    >
+                        Sign in
+                    </Typography>
+                    <div className={s.email}>
+                        <TextField
+                            variant={'standard'}
+                            fullWidth
+                            type="email"
+                            label="Email"
+                            {...formik.getFieldProps('email')}
+                            onBlur={formik.handleBlur}
                         />
-                        {formik.touched.email
-                            ? <div style={{color: 'red'}}>{formik.errors.email}</div>
-                            : null}
+                    </div>
+                    {formik.touched.email
+                        ? <div style={{color: 'red', textAlign: 'left', marginTop: '5px'}}>{formik.errors.email}</div>
+                        : null}
 
-                        <TextField type="password"
-                                   label="Password"
-                                   margin="normal"
-                                   {...formik.getFieldProps('password')}
-                                   onBlur={formik.handleBlur}
+                    <div className={s.password}>
+                        <TextField
+                            variant={'standard'}
+                            fullWidth
+                            type="password"
+                            label="Password"
+                            {...formik.getFieldProps('password')}
+                            onBlur={formik.handleBlur}
                         />
-                        {formik.touched.password
-                            ? <div style={{color: 'red'}}>{formik.errors.password}</div>
-                            : null}
+                    </div>
+                    {formik.touched.password
+                        ?
+                        <div style={{color: 'red', textAlign: 'left', marginTop: '5px'}}>{formik.errors.password}</div>
+                        : null}
 
-                        <FormControlLabel label={'Remember me'}
-                                          control={<Checkbox
-                                              {...formik.getFieldProps('rememberMe')}
-                                              // onChange={formik.handleChange}
-                                              // checked={formik.values.rememberMe}
-                                              // name='rememberMe'
-                                          />}
+                    <div className={s.formControlLabel}>
+                        <FormControlLabel
+                            label={'Remember me'}
+                            control={
+                                <Checkbox {...formik.getFieldProps('rememberMe')}/>}
                         />
+                    </div>
+                    <div className={s.forgotPassword}>
+                        Forgot Password?
+                    </div>
+                    <div className={s.buttonSubmit}>
                         <Button type={'submit'}
                                 variant={'contained'}
                                 color={'primary'}
+                                fullWidth
                         >
-                            Login
+                            Sign in
                         </Button>
-                    </FormGroup>
-                </FormControl>
+                    </div>
+                    <div className={s.typographyHaveAcc}>
+                        <Typography>
+                            Already have an account?
+                        </Typography>
+                    </div>
+                    <div className={s.singUp}>
+                        <Link
+                            to={'/login'}>
+                            Sing Up
+                        </Link>
+                    </div>
+                </Paper>
             </form>
         </Grid>
     </Grid>

@@ -1,0 +1,41 @@
+.paper {
+    display: flex;
+    flex-direction: column;
+    height: 500px;
+    width: 350px;
+    padding: 30px 40px;
+}
+
+.email {
+    margin-bottom: 20px;
+
+}
+
+.password {
+    margin-bottom: 10px;
+}
+
+.confirmPassword {
+    margin-bottom: 70px;
+
+}
+
+.buttonSubmit button {
+    border-radius: 20px;
+}
+
+.buttonSubmit {
+    margin-bottom: 60px;
+}
+
+.typographyHaveAcc {
+    font-weight: 600;
+    opacity: 70%;
+    margin-bottom: 15px;
+
+}
+
+.singUp a {
+    color: #0080FF;
+    font-weight: bold;
+}
