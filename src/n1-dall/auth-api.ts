@@ -11,7 +11,13 @@ const instance = axios.create({
 
 export const authAPI = {
     register(data: RegisterType) {
-        return instance.post<ResponseType>('auth/register', data)
+        return instance.post<{ error?: string }>('auth/register', data)
+    },
+    login(data: LoginParamsType) {
+        return instance.post<ResponseType>('auth/login', data)
+    },
+    logOut() {
+        return instance.delete<LogOutResponseType>('auth/me')
     }
 }
 
@@ -21,6 +27,32 @@ export type RegisterType = {
     password: string
 }
 
+
+export type LoginParamsType = {
+    email: string
+    password: string
+    rememberMe: boolean
+}
+
+export type LogOutResponseType = {
+    info: string
+    error: string;
+}
+
 export type ResponseType = {
-    error?: string
+    _id: string;
+    email: string;
+    name: string;
+    avatar?: string;
+    publicCardPacksCount: number;
+// количество колод
+
+    created: Date;
+    updated: Date;
+    isAdmin: boolean;
+    verified: boolean; // подтвердил ли почту
+    rememberMe: boolean;
+
+    error?: string;
+
 }
