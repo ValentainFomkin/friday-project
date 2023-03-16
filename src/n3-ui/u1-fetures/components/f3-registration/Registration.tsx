@@ -6,8 +6,8 @@ import FormGroup from "@mui/material/FormGroup";
 import TextField from "@mui/material/TextField";
 import Button from "@mui/material/Button";
 import {useAppDispatch, useAppSelector} from "../../../../n2-bll/store";
-import {isRegisterTC} from "../../../../n2-bll/app-reducer";
 import {Navigate} from "react-router-dom";
+import {isRegisterTC} from "./register-reducer";
 
 export type FormikErrorType = {
     email?: string
@@ -15,7 +15,7 @@ export type FormikErrorType = {
 }
 
 export const Registration = () => {
-    const isRegister = useAppSelector(s => s.app.isRegister)
+    const isRegister = useAppSelector(s => s.register.isRegister)
     const dispatch = useAppDispatch()
 
     const formik = useFormik({
@@ -37,7 +37,7 @@ export const Registration = () => {
             } else if (values.password.length < 6) {
                 errors.password = 'Must be more than 6 characters';
             } else if (!/(?=.*[0-9])(?=.*[!@#$%^&*])(?=.*[a-z])(?=.*[A-Z])[0-9a-zA-Z!@#$%^&*]{6,}/g.test(values.password)) {
-                errors.password = 'Invalid email address';
+                errors.password = 'Invalid password';
             }
 
 
@@ -60,27 +60,33 @@ export const Registration = () => {
                 <form onSubmit={formik.handleSubmit}>
                     <FormControl>
                         <FormGroup>
-                            <label htmlFor="email">Email Address</label>
+
                             <TextField
                                 id="email"
                                 type="email"
+                                label="Email"
                                 {...formik.getFieldProps('email')}
                                 onBlur={formik.handleBlur}
                             />
-                            {formik.touched.email
-                                ? <div style={{color: 'red'}}>{formik.errors.email}</div>
-                                : null}
 
-                            <label htmlFor="password">Password</label>
+                            <div style={{margin: '10px 0px'}}>
+                                {formik.touched.email
+                                    ? <div style={{color: 'red'}}>{formik.errors.email}</div>
+                                    : null}
+                            </div>
                             <TextField
                                 id="password"
                                 type="password"
+                                label="Password"
                                 {...formik.getFieldProps('password')}
                                 onBlur={formik.handleBlur}
                             />
-                            {formik.touched.password
-                                ? <div style={{color: 'red'}}>{formik.errors.password}</div>
-                                : null}
+                            <div style={{margin: '10px 0px'}}>
+                                {formik.touched.password
+                                    ? <div style={{color: 'red'}}>{formik.errors.password}</div>
+                                    : null}
+                            </div>
+
                         </FormGroup>
 
                         <Button type="submit">Submit</Button>
