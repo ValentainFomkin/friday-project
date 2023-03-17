@@ -5,6 +5,7 @@ import s from './App.module.css'
 import {RoutesComponent} from "./u1-fetures/components/routes/Routes";
 import {BrowserRouter} from "react-router-dom";
 import {useAppSelector} from "../n2-bll/store";
+import {ErrorSnackbar} from "./u1-fetures/components/errors/ErrorSnackBar";
 
 
 function App() {
@@ -18,6 +19,7 @@ function App() {
 
     return (
         <div className={s.App}>
+            <ErrorSnackbar/>
             <BrowserRouter>
                 <NavBar/>
                 <RoutesComponent/>
