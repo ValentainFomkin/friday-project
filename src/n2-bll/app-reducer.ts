@@ -30,8 +30,8 @@ export type InitialStateType = {
     status: RequestStatusType
     error: string | null
 }
-export type SetAppErrorAC = ReturnType<typeof setAppErrorAC>
-export type SetAppStatusAC = ReturnType<typeof setAppStatusAC>
+export type SetAppErrorActionType = ReturnType<typeof setAppErrorAC>
+export type SetAppStatusActionType = ReturnType<typeof setAppStatusAC>
 export type ActionType =
-    | SetAppErrorAC
-    | SetAppStatusAC
+    | SetAppErrorActionType
+    | SetAppStatusActionType
