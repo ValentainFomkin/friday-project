@@ -7,6 +7,7 @@ import {PasswordRecovery} from "../f5-password-recovery/PasswordRecovery";
 import {Profile} from "../f4-profile/Profile";
 import {Registration} from "../f3-registration/Registration";
 import {PATH} from "./paths-routes/PathRoutes";
+import {CheckEmail} from "../f5-password-recovery/p1-check-email/CheckEmail";
 
 export const RoutesComponent = () => {
 
@@ -17,6 +18,7 @@ export const RoutesComponent = () => {
         {path: PATH.PROFILE_PATH, element: <Profile/>},
         {path: PATH.ERROR_PATH, element: <div>404: PAGE NOT FOUND</div>},
         {path: PATH.PASSWORD_RECOVERY_PATH, element: <PasswordRecovery/>},
+        {path: PATH.CHECK_EMAIL_PATH, element: <CheckEmail/>},
         {path: PATH.ENTER_NEW_PASSWORD_PATH, element: <EnterNewPassword/>},
         {path: PATH.SUPER_COMPONENT_TEST_PATH, element: <AllSuperComponents/>},
     ])
