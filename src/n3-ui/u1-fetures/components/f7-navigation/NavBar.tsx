@@ -1,33 +1,37 @@
 import React from 'react';
 import {Link} from "react-router-dom";
 import s from './NavBar.module.css'
+import {PATH} from "../routes/paths-routes/PathRoutes";
 
 export const NavBar = () => {
     return (
         <div className={s.links}>
             <div className={s.link}>
-                <Link to={'/'}>MAIN</Link>
+                <Link to={PATH.HOME_PAGE_PATH}>MAIN</Link>
             </div>
             <div className={s.link}>
-                <Link to={'/login'}>Login</Link>
+                <Link to={PATH.LOGIN_PATH}>Login</Link>
             </div>
             <div className={s.link}>
-                <Link to={'/registration'}>Registration</Link>
+                <Link to={PATH.REGISTRATION_PATH}>Registration</Link>
             </div>
             <div className={s.link}>
-                <Link to={'/profile'}>Profile</Link>
+                <Link to={PATH.PROFILE_PATH}>Profile</Link>
             </div>
             <div className={s.link}>
-                <Link to={'/404'}>404</Link>
+                <Link to={PATH.ERROR_PATH}>404</Link>
             </div>
             <div className={s.link}>
-                <Link to={'/password-recovery'}>PasswordRecovery</Link>
+                <Link to={PATH.PASSWORD_RECOVERY_PATH}>PasswordRecovery</Link>
             </div>
             <div className={s.link}>
-                <Link to={'/enter-new-password'}>EnterNewPassword</Link>
+                <Link to={PATH.CHECK_EMAIL_PATH}>CheckEmail</Link>
             </div>
             <div className={s.link}>
-                <Link to={'/super-components-test'}>AllSuperComponents</Link>
+                <Link to={PATH.ENTER_NEW_PASSWORD_PATH}>EnterNewPassword</Link>
+            </div>
+            <div className={s.link}>
+                <Link to={PATH.SUPER_COMPONENT_TEST_PATH}>AllSuperComponents</Link>
             </div>
         </div>
     );
