@@ -1,7 +1,7 @@
 .paper {
     display: flex;
     flex-direction: column;
-    height: 500px;
+    height: 475px;
     width: 350px;
     padding: 30px 40px;
 }
@@ -12,11 +12,11 @@
 }
 
 .password {
-    margin-bottom: 10px;
+    margin-bottom: 20px;
 }
 
 .confirmPassword {
-    margin-bottom: 70px;
+    margin-bottom: 60px;
 
 }
 

@@ -1,0 +1,50 @@
+.paper {
+    display: flex;
+    flex-direction: column;
+    height: 450px;
+    width: 400px;
+    padding: 30px 40px;
+}
+
+.email {
+    margin-bottom: 25px;
+}
+
+.typographyHaveAcc {
+    margin-bottom: 60px;
+    text-align: left;
+}
+
+.typographyHaveAcc p {
+    font-size: 16px;
+    opacity: 60%;
+}
+
+.buttonSubmit {
+    margin-bottom: 60px;
+}
+
+.buttonSubmit button {
+    border-radius: 20px;
+}
+
+.questionAboutPass {
+    margin-bottom: 20px;
+}
+
+.questionAboutPass p {
+    font-size: 16px;
+    opacity: 60%;
+    font-weight: 600;
+}
+
+.tryLoggingIn {
+    margin-bottom: 60px;
+}
+
+.tryLoggingIn a {
+    font-size: 18px;
+    font-weight: 600;
+    color: #0080FF;
+
+}

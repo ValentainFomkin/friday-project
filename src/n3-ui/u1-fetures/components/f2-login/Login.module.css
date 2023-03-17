@@ -24,14 +24,22 @@
 }
 
 .forgotPassword {
-    font-weight: 500;
-    text-align: right;
     margin-bottom: 60px;
+    text-align: right;
+}
+
+.forgotPassword a {
+    font-weight: 500;
+    color: black;
+    text-decoration: none;
 }
 
 .buttonSubmit {
-    border-radius: 20px;
     margin-bottom: 60px;
+}
+
+.buttonSubmit button {
+    border-radius: 20px;
 }
 
 .typographyHaveAcc {
