@@ -2,6 +2,7 @@ import React, {useEffect} from 'react';
 import {useAppDispatch, useAppSelector} from "../../../../n2-bll/store";
 import {isLogOutTC} from "../../../../n2-bll/login-reducer";
 import {Navigate} from "react-router-dom";
+import {PATH} from "../routes/paths-routes/PathRoutes";
 
 export const Profile = () => {
     const isLoggedIn = useAppSelector<boolean>(s => s.login.isLoggedIn)
@@ -18,7 +19,7 @@ export const Profile = () => {
     }
 
     if (!isLoggedIn) {
-        return <Navigate to={'/login'}/>
+        return <Navigate to={PATH.LOGIN_PATH}/>
     }
     return (
         <div>

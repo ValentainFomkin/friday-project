@@ -42,5 +42,5 @@ export const isRegisterTC = (data: RegisterType) => (dispatch: Dispatch) => {
 export type InitialStateType = {
     isRegister: boolean
 }
-export type IsRegisterAC = ReturnType<typeof isRegisterAC>
-export type ActionType = IsRegisterAC
+export type IsRegisterActionType = ReturnType<typeof isRegisterAC>
+export type ActionType = IsRegisterActionType

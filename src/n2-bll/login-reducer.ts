@@ -2,6 +2,7 @@ import {authAPI, LoginParamsType} from "../n1-dall/auth-api";
 import {Dispatch} from "redux";
 import {setAppErrorAC, setAppStatusAC} from "./app-reducer";
 import {AxiosError} from "axios";
+import {isRegisterAC} from "./register-reducer";
 
 
 const initialState: InitialStateType = {
@@ -32,6 +33,7 @@ export const isLoggedInTC = (data: LoginParamsType) => (dispatch: Dispatch) => {
         .then(res => {
             setAppStatusAC('succeeded')
             dispatch(isLoggedInAC(true))
+            dispatch(isRegisterAC(true))
         })
         .catch((err) => {
             const error = err.response
@@ -57,5 +59,5 @@ export type InitialStateType = {
     isLoggedIn: boolean
 
 }
-export type isLoggedInAC = ReturnType<typeof isLoggedInAC>
-export type ActionType = isLoggedInAC
+export type isLoggedInActionType = ReturnType<typeof isLoggedInAC>
+export type ActionType = isLoggedInActionType

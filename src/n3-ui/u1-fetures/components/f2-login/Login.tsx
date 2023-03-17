@@ -1,15 +1,23 @@
-import React from 'react';
+import React, {useState} from 'react';
 import {useAppDispatch, useAppSelector} from "../../../../n2-bll/store";
 import {useFormik} from "formik";
 import Grid from "@mui/material/Grid";
 import {Link, Navigate} from "react-router-dom";
-import {Checkbox, FormControlLabel, Paper, Typography} from "@mui/material";
+import Checkbox from "@mui/material/Checkbox"
+import FormControlLabel from "@mui/material/FormControlLabel"
 import TextField from "@mui/material/TextField";
+import IconButton from "@mui/material/IconButton";
+import Input from "@mui/material/Input"
+import Paper from "@mui/material/Paper";
+import Typography from "@mui/material/Typography";
+import InputAdornment from "@mui/material/InputAdornment";
 import Button from "@mui/material/Button";
 import {isLoggedInTC} from "../../../../n2-bll/login-reducer";
 import s from './Login.module.css'
+import {Visibility, VisibilityOff} from "@material-ui/icons";
+import {PATH} from "../routes/paths-routes/PathRoutes";
 
-type FormikErrorType = {
+type FormikLoginErrorType = {
     email?: string
     password?: string
     rememberMe?: boolean
@@ -18,6 +26,9 @@ export const Login = () => {
 
     const dispatch = useAppDispatch()
     const isLoggedIn = useAppSelector<boolean>(s => s.login.isLoggedIn)
+
+    const [showPassword, setShowPassword] = useState(false)
+    const handleClickShowPassword = () => setShowPassword((show) => !show)
 
 
     const formik = useFormik({
@@ -32,7 +43,7 @@ export const Login = () => {
             formik.resetForm()
         },
         validate: values => {
-            const errors: FormikErrorType = {}
+            const errors: FormikLoginErrorType = {}
 
             if (!values.email) {
                 errors.email = 'Required';
@@ -51,14 +62,14 @@ export const Login = () => {
     })
 
     if (isLoggedIn) {
-        return <Navigate to={'/profile'}/>
+        return <Navigate to={PATH.PROFILE_PATH}/>
     }
     return <Grid container justifyContent={'center'}>
         <Grid item justifyContent={'center'}>
             <form onSubmit={formik.handleSubmit}>
                 <Paper className={s.paper}
                        variant={'outlined'}
-                       square
+                       
                 >
                     <Typography component={'h2'}
                                 variant={'h4'}
@@ -78,22 +89,36 @@ export const Login = () => {
                         />
                     </div>
                     {formik.touched.email
-                        ? <div style={{color: 'red', textAlign: 'left', marginTop: '5px'}}>{formik.errors.email}</div>
+                        ? <div style={{color: 'red', textAlign: 'left', marginBottom: '10px'}}>
+                            {formik.errors.email}
+                        </div>
                         : null}
 
                     <div className={s.password}>
-                        <TextField
-                            variant={'standard'}
+                        <Input
+                            placeholder='Password'
                             fullWidth
-                            type="password"
-                            label="Password"
+                            id="password"
+                            type={showPassword ? 'text' : "password"}
                             {...formik.getFieldProps('password')}
                             onBlur={formik.handleBlur}
+                            endAdornment={
+                                <InputAdornment position={"end"}>
+                                    <IconButton
+                                        aria-label="toggle password visibility"
+                                        onClick={handleClickShowPassword}
+                                    >
+                                        {showPassword ? <VisibilityOff/> : <Visibility/>}
+                                    </IconButton>
+                                </InputAdornment>
+                            }
                         />
                     </div>
                     {formik.touched.password
                         ?
-                        <div style={{color: 'red', textAlign: 'left', marginTop: '5px'}}>{formik.errors.password}</div>
+                        <div style={{color: 'red', textAlign: 'left', marginBottom: '10px'}}>
+                            {formik.errors.password}
+                        </div>
                         : null}
 
                     <div className={s.formControlLabel}>
@@ -104,7 +129,9 @@ export const Login = () => {
                         />
                     </div>
                     <div className={s.forgotPassword}>
-                        Forgot Password?
+                        <Link to={PATH.PASSWORD_RECOVERY_PATH}>
+                            Forgot Password?
+                        </Link>
                     </div>
                     <div className={s.buttonSubmit}>
                         <Button type={'submit'}
