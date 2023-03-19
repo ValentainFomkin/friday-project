@@ -1,0 +1,45 @@
+.paper {
+    display: flex;
+    flex-direction: column;
+    height: 450px;
+    width: 400px;
+    padding: 30px 40px;
+}
+
+.image {
+    margin-bottom: 30px;
+}
+
+.image img {
+    height: 150px;
+    width: 150px;
+}
+
+.typographyHaveAcc {
+    margin-bottom: 60px;
+}
+
+.typographyHaveAcc p {
+    font-size: 18px;
+    opacity: 60%;
+}
+
+.actualEmail {
+    font-weight: 600;
+}
+
+.buttonLink {
+
+}
+
+.buttonLink a {
+    background-color: #1976d2;
+    border-radius: 20px;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    width: 400px;
+    height: 35px;
+    text-decoration: none;
+    color: white;
+}

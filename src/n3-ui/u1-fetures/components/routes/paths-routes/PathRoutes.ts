@@ -6,6 +6,6 @@ export const PATH = {
     ERROR_PATH: '/404',
     PASSWORD_RECOVERY_PATH: '/password-recovery',
     CHECK_EMAIL_PATH: '/check-email',
-    ENTER_NEW_PASSWORD_PATH: '/enter-new-password',
+    ENTER_NEW_PASSWORD_PATH: `/set-new-password/:token`,
     SUPER_COMPONENT_TEST_PATH: '/super-components-test',
 }
