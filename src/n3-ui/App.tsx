@@ -4,19 +4,26 @@ import {NavBar} from "./u1-fetures/components/f7-navigation/NavBar";
 import s from './App.module.css'
 import {RoutesComponent} from "./u1-fetures/components/routes/Routes";
 import {BrowserRouter} from "react-router-dom";
-import {useAppSelector} from "../n2-bll/store";
+import {useAppDispatch, useAppSelector} from "../n2-bll/store";
 import {ErrorSnackbar} from "./u1-fetures/components/errors/ErrorSnackBar";
+import {setInitializedTC} from "../n2-bll/app-reducer";
+import CircularProgress from "@mui/material/CircularProgress";
 
 
 function App() {
-    const isRegister = useAppSelector(s => s.register.isRegister)
-
+    const isInitialized = useAppSelector<boolean>(s => s.app.isInitialized)
+    const dispatch = useAppDispatch()
 
     useEffect(() => {
-
+        dispatch(setInitializedTC())
     }, [])
 
-
+    if (!isInitialized) {
+        return <div
+            style={{position: 'fixed', top: '30%', textAlign: 'center', width: '100%'}}>
+            <CircularProgress/>
+        </div>
+    }
     return (
         <div className={s.App}>
             <ErrorSnackbar/>
