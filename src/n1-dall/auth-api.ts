@@ -11,16 +11,22 @@ const instance = axios.create({
 
 export const authAPI = {
     register(data: RegisterType) {
-        return instance.post<{ error?: string }>('auth/register', data)
+        return instance.post<AxiosResponse<{ error?: string }>>('auth/register', data)
     },
     login(data: LoginParamsType) {
-        return instance.post<ResponseType>('auth/login', data)
+        return instance.post<AxiosResponse<ResponseType>>('auth/login', data)
     },
     logOut() {
-        return instance.delete<LogOutResponseType>('auth/me')
+        return instance.delete<AxiosResponse<LogOutResponseType>>('auth/me')
     },
     forgot(data: ForgotType) {
         return axios.post <AxiosResponse<ForgotResponseType>>('https://neko-back.herokuapp.com/2.0/auth/forgot', data)
+    },
+    me() {
+        return instance.post<AxiosResponse<ResponseType>>('auth/me')
+    },
+    setNewPassword(data: SetNewPassType) {
+        return instance.post<AxiosResponse<ForgotResponseType>>('auth/set-new-password', data)
     }
 }
 
@@ -28,6 +34,11 @@ export const authAPI = {
 export type RegisterType = {
     email: string
     password: string
+}
+
+export type SetNewPassType = {
+    password?: string
+    resetPasswordToken?: string
 }
 
 export type ForgotType = {
@@ -59,7 +70,7 @@ export type ResponseType = {
     avatar?: string;
     publicCardPacksCount: number;
 // количество колод
-
+    token: string
     created: Date;
     updated: Date;
     isAdmin: boolean;
