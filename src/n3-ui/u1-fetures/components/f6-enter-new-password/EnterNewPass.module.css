@@ -1,0 +1,26 @@
+.paper {
+    display: flex;
+    flex-direction: column;
+    height: 300px;
+    width: 350px;
+    padding: 30px 40px;
+}
+
+.password {
+    margin-bottom: 20px;
+}
+
+.passwordChangeInformation {
+    margin-bottom: 50px;
+    text-align: left;
+
+}
+
+.passwordChangeInformation p {
+    font-size: 16px;
+    opacity: 70%;
+}
+
+.buttonSubmit button {
+    border-radius: 20px;
+}
