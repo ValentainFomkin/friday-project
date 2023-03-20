@@ -1,4 +1,21 @@
 .App {
     text-align: center;
-    padding: 10px;
+
+}
+
+.appBar {
+    margin-bottom: 60px;
+}
+
+.toolBar {
+    display: flex;
+    justify-content: space-between;
+    width: 80%;
+    margin: 0 auto;
+}
+
+.linkHomePage {
+    color: white;
+    font-weight: 600;
+    text-decoration: none;
 }

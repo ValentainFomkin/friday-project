@@ -27,13 +27,23 @@ export const authAPI = {
     },
     setNewPassword(data: SetNewPassType) {
         return instance.post<AxiosResponse<ForgotResponseType>>('auth/set-new-password', data)
+    },
+    changeProfileInfo(data: ProfileInfoType) {
+        return instance.put<AxiosResponse<UpdateUserResponseType>>('auth/me', data)
     }
+
+
 }
 
 //types
 export type RegisterType = {
     email: string
     password: string
+}
+
+export type ProfileInfoType = {
+    name: string
+    avatar?: string
 }
 
 export type SetNewPassType = {
@@ -61,6 +71,11 @@ export type LoginParamsType = {
 export type LogOutResponseType = {
     info: string
     error: string;
+}
+
+export type UpdateUserResponseType = {
+    updateUser: ResponseType
+    error?: string
 }
 
 export type ResponseType = {

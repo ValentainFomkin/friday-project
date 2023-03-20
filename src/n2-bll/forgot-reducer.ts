@@ -63,6 +63,10 @@ export const setNewUserPasswordTC = (data: SetNewPassType) => (dispatch: Dispatc
                 : (err.message + ', more details in the console')
             dispatch(setAppErrorAC(error))
         })
+        .finally(() => {
+            dispatch(setAppStatusAC('succeeded'))
+
+        })
 }
 
 

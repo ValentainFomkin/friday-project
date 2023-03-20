@@ -37,6 +37,8 @@ export const isRegisterTC = (data: RegisterType) => (dispatch: Dispatch) => {
                 ? err.response.data.error
                 : (err.message + ', more details in the console')
             dispatch(setAppErrorAC(error))
+            dispatch(setAppStatusAC('failed'))
+
         })
 }
 
