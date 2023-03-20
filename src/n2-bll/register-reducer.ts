@@ -1,6 +1,5 @@
 import {authAPI, RegisterType} from "../n1-dall/auth-api";
 import {Dispatch} from "redux";
-import {AxiosError} from "axios";
 import {setAppErrorAC, setAppStatusAC} from "./app-reducer";
 
 
@@ -33,8 +32,11 @@ export const isRegisterTC = (data: RegisterType) => (dispatch: Dispatch) => {
             dispatch(setAppStatusAC('succeeded'))
             dispatch(isRegisterAC(true))
         })
-        .catch((err: AxiosError) => {
-            dispatch(setAppErrorAC(err.message))
+        .catch((err) => {
+            const error = err.response
+                ? err.response.data.error
+                : (err.message + ', more details in the console')
+            dispatch(setAppErrorAC(error))
         })
 }
 
