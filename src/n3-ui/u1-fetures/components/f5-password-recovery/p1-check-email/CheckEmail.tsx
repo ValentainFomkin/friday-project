@@ -16,7 +16,7 @@ export const CheckEmail = () => {
     const formik = useFormik({
         initialValues: {
             email: '',
-            message: `<h1>Перейдите по ссылке для восстановления пароля: <a href='http://localhost:3000/set-new-password/$token$'>link</a></h1>`,
+            message: `<h1>Перейдите по ссылке для восстановления пароля: <a href='https://neko-back.herokuapp.com/2.0/set-new-password/$token$'>link</a></h1>`,
         },
         onSubmit: values => {
 
