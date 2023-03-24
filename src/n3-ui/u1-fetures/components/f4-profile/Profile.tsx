@@ -1,6 +1,6 @@
 import React, {useEffect, useState} from 'react';
 import {useAppDispatch, useAppSelector} from "../../../../n2-bll/store";
-import {Link, Navigate} from "react-router-dom";
+import {Navigate} from "react-router-dom";
 import {PATH} from "../routes/paths-routes/PathRoutes";
 import {useFormik} from "formik";
 import Grid from "@mui/material/Grid";
@@ -133,9 +133,12 @@ export const Profile = () => {
                                 {formik.errors.nickName}
                             </div>
                             : null}
-                        <div className={s.typographyHaveAcc}>
+                      
+                        <div className={s.questionAboutPass}>
                             <Typography>
-                                Enter your email address and we will send you further instructions
+                                <span className={s.actualEmail}>
+                                    {actualEmail}
+                                </span>
                             </Typography>
                         </div>
                         <div className={s.buttonSubmit}>
@@ -145,21 +148,10 @@ export const Profile = () => {
                                     fullWidth
 
                             >
-                                Send instructions
+                                log out
                             </Button>
                         </div>
-                        <div className={s.questionAboutPass}>
-                            <Typography>
-                                <span className={s.actualEmail}>
-                                    {actualEmail}
-                                </span>
-                            </Typography>
-                        </div>
-                        <div className={s.tryLoggingIn}>
-                            <Link to={PATH.LOGIN_PATH}>
-                                Try logging in
-                            </Link>
-                        </div>
+
 
                     </Paper>
                 </form>

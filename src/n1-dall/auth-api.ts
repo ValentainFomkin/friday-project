@@ -19,7 +19,11 @@ export const authAPI = {
     logOut() {
         return instance.delete<AxiosResponse<LogOutResponseType>>('auth/me')
     },
-    forgot(data: ForgotType) {
+    forgot(email: ForgotType) {
+        const data = {
+            email: email.email,
+            message: `<h1>Перейдите по ссылке для восстановления пароля: <a href='http://localhost:3000/set-new-password/$token$'>link</a></h1>`,
+        }
         return axios.post <AxiosResponse<ForgotResponseType>>('https://neko-back.herokuapp.com/2.0/auth/forgot', data)
     },
     me() {
@@ -54,7 +58,7 @@ export type SetNewPassType = {
 export type ForgotType = {
     email: string
     // from: string
-    message: string
+    // message: string
 }
 
 export type ForgotResponseType = {

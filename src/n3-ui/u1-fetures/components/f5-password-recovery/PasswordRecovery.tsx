@@ -15,7 +15,7 @@ import {isForgotTC} from "../../../../n2-bll/forgot-reducer";
 type FormikPassRecoveryErrorType = {
     email?: string
     // from: string
-    message?: string
+    // message?: string
 }
 export const PasswordRecovery = () => {
     const dispatch = useAppDispatch()
@@ -26,7 +26,7 @@ export const PasswordRecovery = () => {
     const formik = useFormik({
         initialValues: {
             email: '',
-            message: `<h1>Перейдите по ссылке для восстановления пароля: <a href='http://localhost:3000/set-new-password/$token$'>link</a></h1>`,
+            // message: `<h1>Перейдите по ссылке для восстановления пароля: <a href='http://localhost:3000/set-new-password/$token$'>link</a></h1>`,
         },
         onSubmit: values => {
             // dispatch(isLoggedInTC(values))
@@ -34,6 +34,7 @@ export const PasswordRecovery = () => {
             formik.resetForm()
         },
         validate: values => {
+
             const errors: FormikPassRecoveryErrorType = {}
             if (!values.email) {
                 errors.email = 'Required';

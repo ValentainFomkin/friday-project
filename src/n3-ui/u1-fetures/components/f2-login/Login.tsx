@@ -26,6 +26,8 @@ export const Login = () => {
 
     const dispatch = useAppDispatch()
     const isLoggedIn = useAppSelector<boolean>(s => s.login.isLoggedIn)
+    const isInitialized = useAppSelector<boolean>(s => s.app.isInitialized)
+
 
     const [showPassword, setShowPassword] = useState(false)
     const handleClickShowPassword = () => setShowPassword((show) => !show)
@@ -40,7 +42,7 @@ export const Login = () => {
         onSubmit: values => {
             dispatch(isLoggedInTC(values))
 
-            formik.resetForm()
+           
         },
         validate: values => {
             const errors: FormikLoginErrorType = {}
@@ -64,12 +66,13 @@ export const Login = () => {
     if (isLoggedIn) {
         return <Navigate to={PATH.PROFILE_PATH}/>
     }
+
     return <Grid container justifyContent={'center'}>
         <Grid item justifyContent={'center'}>
             <form onSubmit={formik.handleSubmit}>
                 <Paper className={s.paper}
                        variant={'outlined'}
-                       
+
                 >
                     <Typography component={'h2'}
                                 variant={'h4'}
