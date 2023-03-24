@@ -1,7 +1,7 @@
 import axios, {AxiosResponse} from 'axios'
 
 const instance = axios.create({
-    // baseURL: process.env.REACT_APP_BACK_URL || 'http://localhost:7542/2.0/',
+    //baseURL: process.env.NODE_ENV === 'development'  ? 'Enter url for local backend' : 'https://neko-back.herokuapp.com/2.0/' ,
     baseURL: 'https://neko-back.herokuapp.com/2.0/',
     withCredentials: true,
     headers: {
@@ -22,7 +22,7 @@ export const authAPI = {
     forgot(email: ForgotType) {
         const data = {
             email: email.email,
-            message: `<h1>Перейдите по ссылке для восстановления пароля: <a href='http://localhost:3000/set-new-password/$token$'>link</a></h1>`,
+            message: `<h1>Перейдите по ссылке для восстановления пароля: <a href='${window.location.origin}/set-new-password/$token$'>link</a></h1>`,
         }
         return axios.post <AxiosResponse<ForgotResponseType>>('https://neko-back.herokuapp.com/2.0/auth/forgot', data)
     },
