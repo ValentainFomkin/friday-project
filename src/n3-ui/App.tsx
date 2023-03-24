@@ -42,7 +42,7 @@ function App() {
     }
 
     return (
-        <BrowserRouter>
+        <BrowserRouter basename={'friday-project'}>
             <div className={s.App}>
                 <ErrorSnackbar/>
                 <AppBar className={s.appBar} position="static">

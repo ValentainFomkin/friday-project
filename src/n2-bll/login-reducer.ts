@@ -11,7 +11,6 @@ const initialState: InitialStateType = {
     user: {
         userName: '',
         nickName: '',
-
     }
 }
 

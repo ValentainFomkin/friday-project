@@ -22,7 +22,7 @@ export const authAPI = {
     forgot(email: ForgotType) {
         const data = {
             email: email.email,
-            message: `<h1>Перейдите по ссылке для восстановления пароля: <a href='${window.location.origin}/set-new-password/$token$'>link</a></h1>`,
+            message: `<h1>Перейдите по ссылке для восстановления пароля: <a href='${window.location.origin}/friday-project/set-new-password/$token$'>link</a></h1>`,
         }
         return axios.post <AxiosResponse<ForgotResponseType>>('https://neko-back.herokuapp.com/2.0/auth/forgot', data)
     },
