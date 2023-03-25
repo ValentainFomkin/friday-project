@@ -12,8 +12,8 @@ import {PATH} from "../routes/paths-routes/PathRoutes";
 import {isForgotTC} from "../../../../n2-bll/forgot-reducer";
 
 export enum CorrectHostPath {
-    LOCAL_HOST = 'http://localhost:3000/#',
-    GITHUB_ENV = 'https://ValentainFomkin.github.io/friday-project/#'
+    LOCAL_HOST = 'http://localhost:3000/',
+    GITHUB_ENV = 'https://ValentainFomkin.github.io/friday-project/'
 }
 
 
@@ -31,11 +31,9 @@ export const PasswordRecovery = () => {
     const envPath = window.location.hostname === 'localhost' ? CorrectHostPath.LOCAL_HOST : CorrectHostPath.GITHUB_ENV
     const formik = useFormik({
         initialValues: {
-            email: '',
-            // message: `<h1>Перейдите по ссылке для восстановления пароля: <a href='http://localhost:3000/set-new-password/$token$'>link</a></h1>`,
+            email: ''
         },
         onSubmit: values => {
-            // dispatch(isLoggedInTC(values))
             dispatch(isForgotTC(values, envPath))
             formik.resetForm()
         },

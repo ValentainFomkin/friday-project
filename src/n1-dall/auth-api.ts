@@ -23,7 +23,7 @@ export const authAPI = {
     forgot(email: ForgotType, envPath: CorrectHostPath) {
         const data = {
             email: email.email,
-            message: `<h1>Перейдите по ссылке для восстановления пароля: <a href='${envPath}/set-new-password/$token$'>link</a></h1>`,
+            message: `<h1>Перейдите по ссылке для восстановления пароля: <a href='${envPath}#/set-new-password/$token$'>link</a></h1>`,
         }
         return instance.post <AxiosResponse<ForgotResponseType>>('auth/forgot', data)
     },

@@ -73,6 +73,7 @@ export const setNewUserPasswordTC = (data: SetNewPassType) => (dispatch: Dispatc
 
 export const isForgotTC = (data: ForgotType, envPath: CorrectHostPath) => (dispatch: Dispatch) => {
     dispatch(setAppStatusAC('loading'))
+    console.log(envPath)
     authAPI.forgot(data, envPath)
         .then(res => {
             dispatch(setAppStatusAC('succeeded'))
