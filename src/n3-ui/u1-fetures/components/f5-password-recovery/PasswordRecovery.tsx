@@ -13,7 +13,7 @@ import {isForgotTC} from "../../../../n2-bll/forgot-reducer";
 
 export enum CorrectHostPath {
     LOCAL_HOST = 'http://localhost:3000/#',
-    GITHUB_ENV = 'https://ValentainFomkin.github.io/#/friday-project'
+    GITHUB_ENV = 'https://ValentainFomkin.github.io/friday-project/#'
 }
 
 
