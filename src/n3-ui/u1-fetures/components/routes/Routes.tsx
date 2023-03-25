@@ -20,7 +20,7 @@ export const RoutesComponent = () => {
         {path: PATH.PASSWORD_RECOVERY_PATH, element: <PasswordRecovery/>},
         {path: PATH.CHECK_EMAIL_PATH, element: <CheckEmail/>},
         {path: PATH.ENTER_NEW_PASSWORD_PATH, element: <EnterNewPassword/>},
-        {path: `set-new-password/:token`, element: <EnterNewPassword/>},
+        // {path: `set-new-password/:token`, element: <EnterNewPassword/>},
         {path: PATH.SUPER_COMPONENT_TEST_PATH, element: <AllSuperComponents/>},
     ])
     return (
