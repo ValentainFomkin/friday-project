@@ -3,7 +3,7 @@ import './App.module.css';
 import {NavBar} from "./u1-fetures/components/f7-navigation/NavBar";
 import s from './App.module.css'
 import {RoutesComponent} from "./u1-fetures/components/routes/Routes";
-import {BrowserRouter, Link} from "react-router-dom";
+import {HashRouter, Link} from "react-router-dom";
 import {useAppDispatch, useAppSelector} from "../n2-bll/store";
 import {ErrorSnackbar} from "./u1-fetures/components/errors/ErrorSnackBar";
 import {RequestStatusType, setInitializedTC} from "../n2-bll/app-reducer";
@@ -42,7 +42,7 @@ function App() {
     }
 
     return (
-        <BrowserRouter basename={'friday-project'}>
+        <HashRouter>
             <div className={s.App}>
                 <ErrorSnackbar/>
                 <AppBar className={s.appBar} position="static">
@@ -62,7 +62,7 @@ function App() {
                 <RoutesComponent/>
 
             </div>
-        </BrowserRouter>
+        </HashRouter>
 
     );
 }
