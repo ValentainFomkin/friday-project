@@ -1,4 +1,5 @@
 import axios, {AxiosResponse} from 'axios'
+import {CorrectHostPath} from "../n3-ui/u1-fetures/components/f5-password-recovery/PasswordRecovery";
 
 const instance = axios.create({
     //baseURL: process.env.NODE_ENV === 'development'  ? 'Enter url for local backend' : 'https://neko-back.herokuapp.com/2.0/' ,
@@ -19,12 +20,12 @@ export const authAPI = {
     logOut() {
         return instance.delete<AxiosResponse<LogOutResponseType>>('auth/me')
     },
-    forgot(email: ForgotType) {
+    forgot(email: ForgotType, envPath: CorrectHostPath) {
         const data = {
             email: email.email,
-            message: `<h1>Перейдите по ссылке для восстановления пароля: <a href='http://localhost:3000/friday-project/set-new-password/$token$'>link</a></h1>`,
+            message: `<h1>Перейдите по ссылке для восстановления пароля: <a href='${envPath}/set-new-password/$token$'>link</a></h1>`,
         }
-        return axios.post <AxiosResponse<ForgotResponseType>>('https://neko-back.herokuapp.com/2.0/auth/forgot', data)
+        return instance.post <AxiosResponse<ForgotResponseType>>('auth/forgot', data)
     },
     me() {
         return instance.post<AxiosResponse<ResponseType>>('auth/me')

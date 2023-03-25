@@ -11,6 +11,10 @@ import {Link, Navigate} from "react-router-dom";
 import {PATH} from "../routes/paths-routes/PathRoutes";
 import {isForgotTC} from "../../../../n2-bll/forgot-reducer";
 
+export enum CorrectHostPath {
+    LOCAL_HOST = 'http://localhost:3000/friday-project',
+    GITHUB_ENV = 'https://ValentainFomkin.github.io/friday-project'
+}
 
 type FormikPassRecoveryErrorType = {
     email?: string
@@ -19,10 +23,11 @@ type FormikPassRecoveryErrorType = {
 }
 export const PasswordRecovery = () => {
     const dispatch = useAppDispatch()
+    console.log(window.location.hostname)
 
     const isForgot = useAppSelector<boolean>(s => s.forgot.isForgot)
 
-
+    const envPath = window.location.hostname === 'localhost' ? CorrectHostPath.LOCAL_HOST : CorrectHostPath.GITHUB_ENV
     const formik = useFormik({
         initialValues: {
             email: '',
@@ -30,7 +35,7 @@ export const PasswordRecovery = () => {
         },
         onSubmit: values => {
             // dispatch(isLoggedInTC(values))
-            dispatch(isForgotTC(values))
+            dispatch(isForgotTC(values, envPath))
             formik.resetForm()
         },
         validate: values => {

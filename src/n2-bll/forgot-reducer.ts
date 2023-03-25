@@ -1,6 +1,7 @@
 import {Dispatch} from "redux";
 import {setAppErrorAC, setAppStatusAC} from "./app-reducer";
 import {authAPI, ForgotType, SetNewPassType} from "../n1-dall/auth-api";
+import {CorrectHostPath} from "../n3-ui/u1-fetures/components/f5-password-recovery/PasswordRecovery";
 
 
 const initialState: InitialStateType = {
@@ -70,9 +71,9 @@ export const setNewUserPasswordTC = (data: SetNewPassType) => (dispatch: Dispatc
 }
 
 
-export const isForgotTC = (data: ForgotType) => (dispatch: Dispatch) => {
+export const isForgotTC = (data: ForgotType, envPath: CorrectHostPath) => (dispatch: Dispatch) => {
     dispatch(setAppStatusAC('loading'))
-    authAPI.forgot(data)
+    authAPI.forgot(data, envPath)
         .then(res => {
             dispatch(setAppStatusAC('succeeded'))
             dispatch(isForgotAC(true))

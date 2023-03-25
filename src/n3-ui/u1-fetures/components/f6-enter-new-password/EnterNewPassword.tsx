@@ -14,6 +14,7 @@ import {setNewUserPasswordTC} from "../../../../n2-bll/forgot-reducer";
 import {Navigate, useParams} from "react-router-dom";
 import {PATH} from "../routes/paths-routes/PathRoutes";
 
+
 type FormikSetNewPassType = {
     password?: string
     resetPasswordToken?: string
@@ -23,6 +24,7 @@ type FormikSetNewPassType = {
 export const EnterNewPassword = () => {
     const dispatch = useAppDispatch()
     const param = useParams<{ token: string }>()
+   
 
     const passwordIsReset = useAppSelector<boolean>(s => s.forgot.passwordIsReset)
 
