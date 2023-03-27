@@ -1,8 +1,8 @@
-import React, {useState} from 'react';
+import React, {useEffect, useState} from 'react';
 import {useAppDispatch, useAppSelector} from "../../../../n2-bll/store";
 import {useFormik} from "formik";
 import Grid from "@mui/material/Grid";
-import {Link, Navigate} from "react-router-dom";
+import {Link, useNavigate} from "react-router-dom";
 import Checkbox from "@mui/material/Checkbox"
 import FormControlLabel from "@mui/material/FormControlLabel"
 import TextField from "@mui/material/TextField";
@@ -16,6 +16,8 @@ import {isLoggedInTC} from "../../../../n2-bll/login-reducer";
 import s from './Login.module.css'
 import {Visibility, VisibilityOff} from "@material-ui/icons";
 import {PATH} from "../routes/paths-routes/PathRoutes";
+import {RequestStatusType} from "../../../../n2-bll/app-reducer";
+import CircularProgress from "@mui/material/CircularProgress";
 
 type FormikLoginErrorType = {
     email?: string
@@ -26,8 +28,14 @@ export const Login = () => {
 
     const dispatch = useAppDispatch()
     const isLoggedIn = useAppSelector<boolean>(s => s.login.isLoggedIn)
-    const isInitialized = useAppSelector<boolean>(s => s.app.isInitialized)
+    const navigate = useNavigate()
+    const status = useAppSelector<RequestStatusType>(s => s.app.status)
 
+    useEffect(() => {
+        if (!isLoggedIn) {
+            navigate(PATH.LOGIN_PATH)
+        }
+    }, [isLoggedIn, navigate])
 
     const [showPassword, setShowPassword] = useState(false)
     const handleClickShowPassword = () => setShowPassword((show) => !show)
@@ -42,7 +50,7 @@ export const Login = () => {
         onSubmit: values => {
             dispatch(isLoggedInTC(values))
 
-           
+
         },
         validate: values => {
             const errors: FormikLoginErrorType = {}
@@ -63,10 +71,16 @@ export const Login = () => {
         }
     })
 
-    if (isLoggedIn) {
-        return <Navigate to={PATH.PROFILE_PATH}/>
+    if (status === 'loading') {
+        return <div
+            style={{position: 'fixed', top: '30%', textAlign: 'center', width: '100%'}}>
+            <CircularProgress/>
+        </div>
     }
 
+    if (isLoggedIn) {
+        navigate(PATH.HOME_PAGE_PATH)
+    }
     return <Grid container justifyContent={'center'}>
         <Grid item justifyContent={'center'}>
             <form onSubmit={formik.handleSubmit}>
