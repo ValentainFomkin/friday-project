@@ -10,6 +10,8 @@ import Button from "@mui/material/Button";
 import {Link, Navigate} from "react-router-dom";
 import {PATH} from "../routes/paths-routes/PathRoutes";
 import {isForgotTC} from "../../../../n2-bll/forgot-reducer";
+import CircularProgress from "@mui/material/CircularProgress";
+import {RequestStatusType} from "../../../../n2-bll/app-reducer";
 
 export enum CorrectHostPath {
     LOCAL_HOST = 'http://localhost:3000/',
@@ -19,13 +21,11 @@ export enum CorrectHostPath {
 
 type FormikPassRecoveryErrorType = {
     email?: string
-    // from: string
-    // message?: string
 }
 export const PasswordRecovery = () => {
     const dispatch = useAppDispatch()
-    console.log(window.location.hostname)
 
+    const status = useAppSelector<RequestStatusType>(s => s.app.status)
     const isForgot = useAppSelector<boolean>(s => s.forgot.isForgot)
 
     const envPath = window.location.hostname === 'localhost' ? CorrectHostPath.LOCAL_HOST : CorrectHostPath.GITHUB_ENV
@@ -48,6 +48,12 @@ export const PasswordRecovery = () => {
             return errors
         }
     })
+    if (status === 'loading') {
+        return <div
+            style={{position: 'fixed', top: '30%', textAlign: 'center', width: '100%'}}>
+            <CircularProgress/>
+        </div>
+    }
     if (isForgot) {
         return <Navigate to={PATH.CHECK_EMAIL_PATH}/>
     }
