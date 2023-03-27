@@ -1,6 +1,6 @@
 import React, {useEffect, useState} from 'react';
 import {useAppDispatch, useAppSelector} from "../../../../n2-bll/store";
-import {Navigate} from "react-router-dom";
+import {Link, Navigate} from "react-router-dom";
 import {PATH} from "../routes/paths-routes/PathRoutes";
 import {useFormik} from "formik";
 import Grid from "@mui/material/Grid";
@@ -13,6 +13,9 @@ import Avatar from "@mui/material/Avatar";
 import avatar from './../../../images/img-profile/avatar-profile.png'
 import {Send} from "@mui/icons-material";
 import {changeProfileInfoTC} from "../../../../n2-bll/app-reducer";
+import {isLogOutTC} from "../../../../n2-bll/login-reducer";
+import {ProfileInfoType} from "../../../../n1-dall/auth-api";
+import KeyboardBackspaceIcon from '@mui/icons-material/KeyboardBackspace';
 
 type FormikProfileErrorType = {
     nickName?: string
@@ -20,48 +23,52 @@ type FormikProfileErrorType = {
 }
 type SetShowType = 'show' | 'unShow'
 export const Profile = () => {
+
     const isLoggedIn = useAppSelector<boolean>(s => s.login.isLoggedIn)
-    const actualEmail = useAppSelector<string>(s => s.forgot.user.email)
-    const actualNickName = useAppSelector<string>(s => s.login.user.nickName)
-    const name = useAppSelector<string>(s => s.login.user.userName)
-
-    const [showInfoOfUser, setShowInfoOfUser] = useState<SetShowType>('unShow')
-    const showButtonAndInputHandler = () => {
-        setShowInfoOfUser('show')
-    }
-    const unShowButtonAndInputHandler = () => {
-        setShowInfoOfUser('unShow')
-
-    }
-
+    const actualEmail = useAppSelector<string>(s => s.app.user.email)
+    const actualNickName = useAppSelector<string>(s => s.app.user.name)
     const dispatch = useAppDispatch()
-
-    const formik = useFormik({
-        initialValues: {
-            nickName: '',
-            avatar: ''
-        },
-        onSubmit: ({nickName, avatar}) => {
-            if (!nickName) return
-            dispatch(changeProfileInfoTC({name: nickName, avatar}))
-            formik.resetForm()
-        },
-        validate: values => {
-            const errors: FormikProfileErrorType = {}
-            if (!values.nickName) {
-                errors.nickName = 'Required';
-            } else if (values.nickName.length < 6) {
-                errors.nickName = 'Nickname length must be more than 6 characters';
-            }
-            return errors
-        }
-    })
 
     useEffect(() => {
         if (!isLoggedIn) {
             return
         }
-    }, [])
+    }, [isLoggedIn, actualNickName, actualEmail])
+
+
+    const [showInfoOfUser, setShowInfoOfUser] = useState<SetShowType>('unShow')
+    const showButtonAndInputHandler = () => {
+        setShowInfoOfUser('show')
+    }
+    const unShowButtonAndInputHandler = (values: ProfileInfoType) => {
+        dispatch(changeProfileInfoTC(values))
+        setShowInfoOfUser('unShow')
+    }
+
+    const logOutHandler = () => {
+        dispatch(isLogOutTC())
+    }
+
+
+    const formik = useFormik({
+        initialValues: {
+            name: '',
+            avatar: ''
+        },
+        onSubmit: (values) => {
+            unShowButtonAndInputHandler(values)
+            // formik.resetForm()
+        },
+        validate: values => {
+            const errors: FormikProfileErrorType = {}
+            if (!values.name) {
+                errors.nickName = 'Required';
+            } else if (values.name.length < 2) {
+                errors.nickName = 'Nickname length must be more than 2 characters';
+            }
+            return errors
+        }
+    })
 
 
     if (!isLoggedIn) {
@@ -70,93 +77,101 @@ export const Profile = () => {
 
 
     return (
-        <Grid container justifyContent={'center'}>
-            <Grid item justifyContent={'center'}>
-                <form onSubmit={formik.handleSubmit}>
-                    <Paper className={s.paper}
-                           variant={'outlined'}
+        <div className={s.profileContainer}>
+            <div className={s.backToPackList}>
+                <Link className={s.linkBack}
+                      to={PATH.HOME_PAGE_PATH}
+                >
+                    <KeyboardBackspaceIcon className={s.iconBack}/>
+                    <div>Back to Packs List</div>
+                </Link>
+            </div>
+            <Grid container justifyContent={'center'}>
+                <Grid item justifyContent={'center'}>
+                    <form onSubmit={formik.handleSubmit}>
+                        <Paper className={s.paper}
+                               variant={'outlined'}
 
-                    >
-                        <Typography component={'h2'}
-                                    variant={'h4'}
-                                    marginBottom={'40px'}
-                                    fontWeight={'600'}
                         >
-                            Personal information
-                        </Typography>
-                        <div className={s.avatar}>
-                            <Avatar
-                                alt="Avatar"
-                                src={avatar}
-                                sx={{width: 150, height: 150}}
-                            />
-                        </div>
-
-                        {showInfoOfUser === 'show' ?
-                            <div className={s.nickName}>
-                                <TextField
-                                    variant={'standard'}
-                                    fullWidth
-                                    type="text"
-                                    id='nickName'
-                                    label="Nickname"
-                                    {...formik.getFieldProps('nickName')}
-                                    onBlur={formik.handleBlur}
-
+                            <Typography component={'h2'}
+                                        variant={'h4'}
+                                        marginBottom={'40px'}
+                                        fontWeight={'600'}
+                            >
+                                Personal information
+                            </Typography>
+                            <div className={s.avatar}>
+                                <Avatar
+                                    alt="Avatar"
+                                    src={avatar}
+                                    sx={{width: 150, height: 150}}
                                 />
-                                <div className={s.sendButton}>
-                                    <Button variant="text"
-                                            endIcon={<Send/>}
-                                            onClick={unShowButtonAndInputHandler}
-                                    >
-                                        Save
-                                    </Button>
+                            </div>
+
+                            {showInfoOfUser === 'show' ?
+                                <div className={s.nickName}>
+                                    <TextField
+                                        variant={'standard'}
+                                        fullWidth
+                                        type="text"
+                                        id='name'
+                                        label="Nickname"
+                                        {...formik.getFieldProps('name')}
+                                        onBlur={formik.handleBlur}
+
+                                    />
+                                    <div className={s.sendButton}>
+                                        <Button variant="text"
+                                                endIcon={<Send/>}
+                                                onClick={() => unShowButtonAndInputHandler(formik.values)}
+                                        >
+                                            Save
+                                        </Button>
+                                    </div>
                                 </div>
-                            </div>
-                            : <Typography variant={'h6'}
-                                          marginBottom={'40px'}
-                                          fontWeight={'600'}
-                                          onDoubleClick={showButtonAndInputHandler}
-                            >
-                                {actualNickName ? actualNickName : name}
-                            </Typography>
-                        }
+                                : <Typography variant={'h6'}
+                                              marginBottom={'40px'}
+                                              fontWeight={'600'}
+                                              onDoubleClick={showButtonAndInputHandler}
+                                >
+                                    {actualNickName ? actualNickName : actualEmail}
+                                </Typography>
+                            }
 
-                        {formik.touched.nickName
-                            ?
-                            <div style={{
-                                color: 'red',
-                                textAlign: 'left',
-                                marginBottom: '10px',
-                                marginTop: '-10px'
-                            }}>
-                                {formik.errors.nickName}
-                            </div>
-                            : null}
-                      
-                        <div className={s.questionAboutPass}>
-                            <Typography>
-                                <span className={s.actualEmail}>
+                            {formik.touched.name
+                                ?
+                                <div style={{
+                                    color: 'red',
+                                    textAlign: 'left',
+                                    marginBottom: '10px',
+                                    marginTop: '-10px'
+                                }}>
+                                    {formik.errors.name}
+                                </div>
+                                : null}
+
+                            <div className={s.actualEmail}>
+                                <Typography>
                                     {actualEmail}
-                                </span>
-                            </Typography>
-                        </div>
-                        <div className={s.buttonSubmit}>
-                            <Button type={'submit'}
-                                    variant={'contained'}
-                                    color={'primary'}
-                                    fullWidth
+                                </Typography>
+                            </div>
+                            <div className={s.buttonSubmit}>
+                                <Button type={'button'}
+                                        variant={'contained'}
+                                        color={'primary'}
+                                        fullWidth
+                                        onClick={logOutHandler}
+                                >
+                                    log out
+                                </Button>
+                            </div>
 
-                            >
-                                log out
-                            </Button>
-                        </div>
 
-
-                    </Paper>
-                </form>
+                        </Paper>
+                    </form>
+                </Grid>
             </Grid>
-        </Grid>
+        </div>
     );
 };
 
