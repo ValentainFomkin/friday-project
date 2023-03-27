@@ -1,5 +1,5 @@
 import {Dispatch} from "redux";
-import {setAppErrorAC, setAppStatusAC} from "./app-reducer";
+import {setAppErrorAC, setAppStatusAC, setUserEmailAC} from "./app-reducer";
 import {authAPI, ForgotType, SetNewPassType} from "../n1-dall/auth-api";
 import {CorrectHostPath} from "../n3-ui/u1-fetures/components/f5-password-recovery/PasswordRecovery";
 
@@ -7,10 +7,10 @@ import {CorrectHostPath} from "../n3-ui/u1-fetures/components/f5-password-recove
 const initialState: InitialStateType = {
     isForgot: false,
     passwordIsReset: false,
-    user: {
-        email: '',
-        password: '',
-    }
+    // user: {
+    //     email: '',
+    //     password: '',
+    // }
 }
 
 // CONSTANTS
@@ -25,16 +25,16 @@ export const forgotReducer = (state = initialState, action: ActionType): Initial
     switch (action.type) {
         case "auth/IS_FORGOT":
             return {...state, isForgot: action.value}
-        case "SET_USER_EMAIL":
-            return {
-                ...state,
-                user: {...state.user, email: action.email}
-            }
-        case "SET_NEW_USER_PASSWORD":
-            return {
-                ...state,
-                user: {...state.user, password: action.newPassword}
-            }
+        // case "SET_USER_EMAIL":
+        //     return {
+        //         ...state,
+        //         user: {...state.user, email: action.email}
+        //     }
+        // case "SET_NEW_USER_PASSWORD":
+        //     return {
+        //         ...state,
+        //         user: {...state.user, password: action.newPassword}
+        //     }
         case "SET_RESET_PASSWORD":
             return {...state, passwordIsReset: action.value}
         default:
@@ -44,8 +44,8 @@ export const forgotReducer = (state = initialState, action: ActionType): Initial
 
 // actions
 export const isForgotAC = (value: boolean) => ({type: auth_IS_FORGOT, value} as const)
-export const setUserEmailAC = (email: string) => ({type: SET_USER_EMAIL, email} as const)
-export const setNewUserPasswordAC = (newPassword: string) => ({type: SET_NEW_USER_PASSWORD, newPassword} as const)
+// export const setUserEmailAC = (email: string) => ({type: SET_USER_EMAIL, email} as const)
+// export const setNewUserPasswordAC = (newPassword: string) => ({type: SET_NEW_USER_PASSWORD, newPassword} as const)
 export const passwordIsResetAC = (value: boolean) => ({type: SET_RESET_PASSWORD, value} as const)
 
 
@@ -70,10 +70,8 @@ export const setNewUserPasswordTC = (data: SetNewPassType) => (dispatch: Dispatc
         })
 }
 
-
 export const isForgotTC = (data: ForgotType, envPath: CorrectHostPath) => (dispatch: Dispatch) => {
     dispatch(setAppStatusAC('loading'))
-    console.log(envPath)
     authAPI.forgot(data, envPath)
         .then(res => {
             dispatch(setAppStatusAC('succeeded'))
@@ -89,21 +87,21 @@ export const isForgotTC = (data: ForgotType, envPath: CorrectHostPath) => (dispa
 }
 
 // types
-type UserType = {
-    email: string
-    password: string
-}
+// type UserType = {
+//     email: string
+//     password: string
+// }
 export type InitialStateType = {
     isForgot: boolean
     passwordIsReset: boolean
-    user: UserType
+    // user: UserType
 }
 export type isForgotActionType = ReturnType<typeof isForgotAC>
-export type setUserEmailActionType = ReturnType<typeof setUserEmailAC>
-export type setNewUserPasswordActionType = ReturnType<typeof setNewUserPasswordAC>
+// export type setUserEmailActionType = ReturnType<typeof setUserEmailAC>
+// export type setNewUserPasswordActionType = ReturnType<typeof setNewUserPasswordAC>
 export type passwordIsResetActionType = ReturnType<typeof passwordIsResetAC>
 export type ActionType = isForgotActionType
-    | setUserEmailActionType
-    | setNewUserPasswordActionType
+    // | setUserEmailActionType
+    // | setNewUserPasswordActionType
     | passwordIsResetActionType
 
