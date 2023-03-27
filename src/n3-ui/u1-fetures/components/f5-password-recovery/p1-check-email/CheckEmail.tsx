@@ -10,16 +10,14 @@ import {PATH} from "../../routes/paths-routes/PathRoutes";
 
 
 export const CheckEmail = () => {
-    const actualEmail = useAppSelector<string>(s => s.forgot.user.email)
+    const actualEmail = useAppSelector<string>(s => s.app.user.email)
 
 
     const formik = useFormik({
         initialValues: {
             email: '',
-            message: `<h1>Перейдите по ссылке для восстановления пароля: <a href='https://neko-back.herokuapp.com/2.0/set-new-password/$token$'>link</a></h1>`,
         },
         onSubmit: values => {
-
         },
     })
 
@@ -30,7 +28,6 @@ export const CheckEmail = () => {
                 <form onSubmit={formik.handleSubmit}>
                     <Paper className={s.paper}
                            variant={'outlined'}
-
                     >
                         <Typography component={'h2'}
                                     variant={'h4'}
@@ -46,7 +43,9 @@ export const CheckEmail = () => {
                             <Typography>
                                 We've sent an Email with instructions to
                                 <span className={s.actualEmail}>
-                                    {actualEmail}
+                                    <a target={"_blank"} href={`https://${actualEmail}`}>
+                                        {actualEmail}
+                                    </a>
                                 </span>
                             </Typography>
                         </div>
