@@ -1,20 +1,32 @@
 import {authAPI, ProfileInfoType} from "../n1-dall/auth-api";
 import {Dispatch} from "redux";
-import {isLoggedInAC, setNewNickNamedAC} from "./login-reducer";
+import {isLoggedInAC} from "./login-reducer";
 
 const initialState: InitialStateType = {
     status: 'idle',
     error: null,
     isInitialized: false,
     user: {
-        nickName: '',
+        _id: '',
+        email: '',
+        name: '',
         avatar: '',
+        publicCardPacksCount: 0,// количество колод
+        created: '',
+        updated: '',
+        isAdmin: false,
+        verified: false, // подтвердил ли почту
+        rememberMe: false,
+        error: '',
     }
 }
 const auth_IS_ERROR = 'auth/IS_ERROR'
 const auth_IS_CHANGE_STATUS = 'auth/IS_CHANGE_STATUS'
 const auth_SET_INITIALIZED = 'auth/SET_INITIALIZED'
 const auth_SET_NEW_NICK_NAME = 'auth/SET_NEW_NICK_NAME'
+const SET_USER_EMAIL = 'SET_USER_EMAIL'
+
+// const SET_NEW_USER_PASSWORD = 'SET_NEW_USER_PASSWORD'
 
 export const appReducer = (state = initialState, action: ActionType): InitialStateType => {
     switch (action.type) {
@@ -24,8 +36,18 @@ export const appReducer = (state = initialState, action: ActionType): InitialSta
             return {...state, error: action.error}
         case "auth/SET_INITIALIZED":
             return {...state, isInitialized: action.isInitialized}
-        // case "auth/SET_NEW_NICK_NAME":
-        //     return {...state, user: {...state.user, nickName: action.newNIckNAme}}
+        case "SET_USER_EMAIL":
+            return {...state, user: {...state.user, email: action.email}}
+        case "auth/SET_NEW_NICK_NAME":
+            return {...state, user: {...state.user, name: action.newName}}
+
+
+        // case "SET_NEW_USER_PASSWORD":
+        //     return {
+        //         ...state,
+        //         user: {...state.user, password: action.newPassword}
+        //     }
+
         default:
             return state
     }
@@ -35,7 +57,10 @@ export const appReducer = (state = initialState, action: ActionType): InitialSta
 export const setAppErrorAC = (error: string | null) => ({type: auth_IS_ERROR, error} as const)
 export const setAppStatusAC = (status: RequestStatusType) => ({type: auth_IS_CHANGE_STATUS, status} as const)
 export const setInitializedAC = (isInitialized: boolean) => ({type: auth_SET_INITIALIZED, isInitialized} as const)
-// export const setNewNickNamedAC = (newNIckNAme: string) => ({type: auth_SET_NEW_NICK_NAME, newNIckNAme} as const)
+export const setUserEmailAC = (email: string) => ({type: SET_USER_EMAIL, email} as const)
+export const setNewNamedAC = (newName: string) => ({type: auth_SET_NEW_NICK_NAME, newName} as const)
+
+// export const setNewUserPasswordAC = (newPassword: string) => ({type: SET_NEW_USER_PASSWORD, newPassword} as const)
 
 
 //thunks
@@ -44,7 +69,7 @@ export const changeProfileInfoTC = (data: ProfileInfoType) => (dispatch: Dispatc
     authAPI.changeProfileInfo(data)
         .then(res => {
             dispatch(setAppStatusAC('succeeded'))
-            dispatch(setNewNickNamedAC(data.name))
+            dispatch(setNewNamedAC(res.data.updatedUser.name))
         })
         .catch((err) => {
             const error = err.response
@@ -55,13 +80,14 @@ export const changeProfileInfoTC = (data: ProfileInfoType) => (dispatch: Dispatc
         })
 
 }
-
 export const setInitializedTC = () => (dispatch: Dispatch) => {
     dispatch(setAppStatusAC('loading'))
     authAPI.me()
         .then(res => {
             dispatch(setAppStatusAC('succeeded'))
             dispatch(isLoggedInAC(true))
+            dispatch(setNewNamedAC(res.data.name))
+            dispatch(setUserEmailAC(res.data.email))
         })
         .catch((err) => {
             const error = err.response
@@ -78,8 +104,17 @@ export const setInitializedTC = () => (dispatch: Dispatch) => {
 //types
 export type RequestStatusType = 'idle' | 'loading' | 'succeeded' | 'failed'
 export type UserAppType = {
-    nickName: string
+    _id: string
+    email: string
+    name: string
     avatar: string
+    publicCardPacksCount: number
+    created: string
+    updated: string
+    isAdmin: boolean
+    verified: boolean
+    rememberMe: boolean
+    error: string
 }
 export type InitialStateType = {
     status: RequestStatusType
@@ -90,9 +125,16 @@ export type InitialStateType = {
 export type SetAppErrorActionType = ReturnType<typeof setAppErrorAC>
 export type SetAppStatusActionType = ReturnType<typeof setAppStatusAC>
 export type SetInitializedACActionType = ReturnType<typeof setInitializedAC>
-// export type setNewNickNamedActionType = ReturnType<typeof setNewNickNamedAC>
+export type setUserEmailActionType = ReturnType<typeof setUserEmailAC>
+export type setNewNickNamedActionType = ReturnType<typeof setNewNamedAC>
+
+// export type setNewUserPasswordActionType = ReturnType<typeof setNewUserPasswordAC>
+
 export type ActionType =
     | SetAppErrorActionType
     | SetAppStatusActionType
     | SetInitializedACActionType
-// | setNewNickNamedActionType
+    | setUserEmailActionType
+    | setNewNickNamedActionType
+
+// | setNewUserPasswordActionType
