@@ -1,4 +1,4 @@
-import axios, {AxiosResponse} from 'axios'
+import axios from 'axios'
 import {CorrectHostPath} from "../n3-ui/u1-fetures/components/f5-password-recovery/PasswordRecovery";
 
 const instance = axios.create({
@@ -12,29 +12,29 @@ const instance = axios.create({
 
 export const authAPI = {
     register(data: RegisterType) {
-        return instance.post<AxiosResponse<{ error?: string }>>('auth/register', data)
+        return instance.post<{ error?: string }>('auth/register', data)
     },
     login(data: LoginParamsType) {
-        return instance.post<AxiosResponse<ResponseType>>('auth/login', data)
+        return instance.post<ResponseType>('auth/login', data)
     },
     logOut() {
-        return instance.delete<AxiosResponse<LogOutResponseType>>('auth/me')
+        return instance.delete<LogOutResponseType>('auth/me')
     },
     forgot(email: ForgotType, envPath: CorrectHostPath) {
         const data = {
             email: email.email,
             message: `<h1>Перейдите по ссылке для восстановления пароля: <a href='${envPath}#/set-new-password/$token$'>link</a></h1>`,
         }
-        return instance.post <AxiosResponse<ForgotResponseType>>('auth/forgot', data)
+        return instance.post<ForgotResponseType>('auth/forgot', data)
     },
     me() {
-        return instance.post<AxiosResponse<ResponseType>>('auth/me')
+        return instance.post<ResponseType>('auth/me')
     },
     setNewPassword(data: SetNewPassType) {
-        return instance.post<AxiosResponse<ForgotResponseType>>('auth/set-new-password', data)
+        return instance.post<ForgotResponseType>('auth/set-new-password', data)
     },
     changeProfileInfo(data: ProfileInfoType) {
-        return instance.put<AxiosResponse<UpdateUserResponseType>>('auth/me', data)
+        return instance.put<UpdateUserResponseType>('auth/me', data)
     }
 
 
@@ -75,28 +75,28 @@ export type LoginParamsType = {
 
 export type LogOutResponseType = {
     info: string
-    error: string;
+    error: string
 }
 
 export type UpdateUserResponseType = {
-    updateUser: ResponseType
+    updatedUser: ResponseType
     error?: string
 }
 
 export type ResponseType = {
-    _id: string;
-    email: string;
-    name: string;
-    avatar?: string;
-    publicCardPacksCount: number;
+    _id: string
+    email: string
+    name: string
+    avatar?: string
+    publicCardPacksCount: number
 // количество колод
     token: string
-    created: Date;
-    updated: Date;
-    isAdmin: boolean;
-    verified: boolean; // подтвердил ли почту
-    rememberMe: boolean;
+    created: Date
+    updated: Date
+    isAdmin: boolean
+    verified: boolean // подтвердил ли почту
+    rememberMe: boolean
 
-    error?: string;
+    error?: string
 
 }
