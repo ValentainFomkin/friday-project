@@ -157,9 +157,8 @@ export const Profile = () => {
                             </div>
                             <div className={s.buttonSubmit}>
                                 <Button type={'button'}
-                                        variant={'contained'}
-                                        color={'primary'}
-                                        fullWidth
+                                        variant={'outlined'}
+                                        color={'inherit'}
                                         onClick={logOutHandler}
                                 >
                                     log out
