@@ -8,11 +8,12 @@ import {Profile} from "../f4-profile/Profile";
 import {Registration} from "../f3-registration/Registration";
 import {PATH} from "./paths-routes/PathRoutes";
 import {CheckEmail} from "../f5-password-recovery/p1-check-email/CheckEmail";
+import {MainPage} from "../f8-main-page/MainPage";
 
 export const RoutesComponent = () => {
 
     const routs = useRoutes([
-        {path: PATH.HOME_PAGE_PATH, element: <div>DEFAULT PAGE</div>},
+        {path: PATH.HOME_PAGE_PATH, element: <MainPage/>},
         {path: PATH.LOGIN_PATH, element: <Login/>},
         {path: PATH.REGISTRATION_PATH, element: <Registration/>},
         {path: PATH.PROFILE_PATH, element: <Profile/>},
