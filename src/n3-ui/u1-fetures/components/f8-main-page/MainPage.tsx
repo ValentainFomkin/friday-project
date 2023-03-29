@@ -2,6 +2,7 @@ import React, {useEffect} from 'react';
 import {useAppSelector} from "../../../../n2-bll/store";
 import {PATH} from "../routes/paths-routes/PathRoutes";
 import {useNavigate} from "react-router-dom";
+import {DataTable} from "./PacksPage/PacksPageTable";
 
 export const MainPage = () => {
     const isLoggedIn = useAppSelector<boolean>(s => s.login.isLoggedIn)
@@ -15,7 +16,9 @@ export const MainPage = () => {
 
     return (
         <div>
-            DEF PAGE
+            {/*PACK LIST*/}
+            {/*<PacksListTable/>*/}
+            <DataTable/>
         </div>
     );
 };
