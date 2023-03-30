@@ -1,6 +1,8 @@
 import {authAPI, ProfileInfoType} from "../n1-dall/auth-api";
 import {Dispatch} from "redux";
 import {isLoggedInAC} from "./login-reducer";
+import {CardPacks, ResponseType, tableAPI} from "../n1-dall/table-api";
+import {v1} from "uuid";
 
 const initialState: InitialStateType = {
     status: 'idle',
@@ -18,13 +20,35 @@ const initialState: InitialStateType = {
         verified: false, // подтвердил ли почту
         rememberMe: false,
         error: '',
+    },
+    cards: {
+        cardPacks: [
+            {
+                _id: "",
+                user_id: "",
+                name: "",
+                cardsCount: 0,
+                created: "",
+                updated: "",
+                user_name: '',
+                private: false
+            }
+        ],
+        cardPacksTotalCount: 0,   // количество колод
+        maxCardsCount: 0,
+        minCardsCount: 0,
+        page: 0,// выбранная страница
+        pageCount: 0,
     }
+
 }
 const auth_IS_ERROR = 'auth/IS_ERROR'
 const auth_IS_CHANGE_STATUS = 'auth/IS_CHANGE_STATUS'
 const auth_SET_INITIALIZED = 'auth/SET_INITIALIZED'
 const auth_SET_NEW_NICK_NAME = 'auth/SET_NEW_NICK_NAME'
 const SET_USER_EMAIL = 'SET_USER_EMAIL'
+const GET_ALL_CARD_PACKS = 'GET_ALL_CARD_PACKS'
+const ADD_NEW_PACK = 'ADD_NEW_PACK'
 
 // const SET_NEW_USER_PASSWORD = 'SET_NEW_USER_PASSWORD'
 
@@ -40,14 +64,37 @@ export const appReducer = (state = initialState, action: ActionType): InitialSta
             return {...state, user: {...state.user, email: action.email}}
         case "auth/SET_NEW_NICK_NAME":
             return {...state, user: {...state.user, name: action.newName}}
-
-
-        // case "SET_NEW_USER_PASSWORD":
-        //     return {
-        //         ...state,
-        //         user: {...state.user, password: action.newPassword}
-        //     }
-
+        case "GET_ALL_CARD_PACKS":
+            return {
+                ...state,
+                cards: {
+                    ...state.cards,
+                    cardPacks: action.config.cardPacks.map(p => ({...p})),
+                    cardPacksTotalCount: action.config.cardPacksTotalCount,
+                    maxCardsCount: action.config.maxCardsCount,
+                    minCardsCount: action.config.minCardsCount,
+                    page: action.config.page,
+                    pageCount: action.config.pageCount,
+                },
+            }
+        case "ADD_NEW_PACK": {
+            const newCard: CardPacks = {
+                _id: v1(),
+                user_id: v1(),
+                user_name: 'ADD NEW PACK',
+                name: action.packName,
+                cardsCount: 0,
+                created: new Date().toLocaleDateString(),
+                updated: new Date().toLocaleDateString(),
+                private: action.privateValue,
+            }
+            return {
+                ...state, cards: {
+                    ...state.cards,
+                    cardPacks: [newCard, ...state.cards.cardPacks]
+                }
+            }
+        }
         default:
             return state
     }
@@ -59,6 +106,12 @@ export const setAppStatusAC = (status: RequestStatusType) => ({type: auth_IS_CHA
 export const setInitializedAC = (isInitialized: boolean) => ({type: auth_SET_INITIALIZED, isInitialized} as const)
 export const setUserEmailAC = (email: string) => ({type: SET_USER_EMAIL, email} as const)
 export const setNewNamedAC = (newName: string) => ({type: auth_SET_NEW_NICK_NAME, newName} as const)
+export const setAllCardPacksAC = (config: ResponseType) => ({type: GET_ALL_CARD_PACKS, config} as const)
+export const addNewPackAC = (packName: string, privateValue: boolean) => ({
+    type: ADD_NEW_PACK,
+    packName,
+    privateValue
+} as const)
 
 // export const setNewUserPasswordAC = (newPassword: string) => ({type: SET_NEW_USER_PASSWORD, newPassword} as const)
 
@@ -100,6 +153,37 @@ export const setInitializedTC = () => (dispatch: Dispatch) => {
             dispatch(setInitializedAC(true))
         })
 }
+export const fetchCardPacksTC = () => (dispatch: Dispatch) => {
+    dispatch(setAppStatusAC('loading'))
+    tableAPI.getAllPacks()
+        .then(res => {
+            dispatch(setAppStatusAC('succeeded'))
+            dispatch(setAllCardPacksAC(res.data))
+        })
+        .catch((err) => {
+            const error = err.response
+                ? err.response.data.error
+                : (err.message + ', more details in the console')
+            dispatch(setAppErrorAC(error))
+            dispatch(setAppStatusAC('failed'))
+        })
+}
+export const addNewPackTC = () => (dispatch: Dispatch) => {
+    dispatch(setAppStatusAC('loading'))
+    tableAPI.getAllPacks()
+        .then(res => {
+            dispatch(setAppStatusAC('succeeded'))
+            dispatch(addNewPackAC('ADD NEW PACK', false))
+        })
+        .catch((err) => {
+            const error = err.response
+                ? err.response.data.error
+                : (err.message + ', more details in the console')
+            dispatch(setAppErrorAC(error))
+            dispatch(setAppStatusAC('failed'))
+        })
+}
+
 
 //types
 export type RequestStatusType = 'idle' | 'loading' | 'succeeded' | 'failed'
@@ -121,12 +205,31 @@ export type InitialStateType = {
     error: string | null
     isInitialized: boolean
     user: UserAppType
+    cards: {
+        cardPacks: CardPacks[]
+        cardPacksTotalCount: number// количество колод
+        maxCardsCount: number
+        minCardsCount: number
+        page: number // выбранная страница
+        pageCount: number
+    }
+
 }
+export type InfoOfCards = {
+    cardPTC: number
+    maxCC: number
+    minCC: number
+    page: number
+    pageCount: number
+}
+
 export type SetAppErrorActionType = ReturnType<typeof setAppErrorAC>
 export type SetAppStatusActionType = ReturnType<typeof setAppStatusAC>
 export type SetInitializedACActionType = ReturnType<typeof setInitializedAC>
 export type setUserEmailActionType = ReturnType<typeof setUserEmailAC>
 export type setNewNickNamedActionType = ReturnType<typeof setNewNamedAC>
+export type setAllCardPacksActionType = ReturnType<typeof setAllCardPacksAC>
+export type addNewPackActionType = ReturnType<typeof addNewPackAC>
 
 // export type setNewUserPasswordActionType = ReturnType<typeof setNewUserPasswordAC>
 
@@ -136,5 +239,7 @@ export type ActionType =
     | SetInitializedACActionType
     | setUserEmailActionType
     | setNewNickNamedActionType
+    | setAllCardPacksActionType
+    | addNewPackActionType
 
 // | setNewUserPasswordActionType

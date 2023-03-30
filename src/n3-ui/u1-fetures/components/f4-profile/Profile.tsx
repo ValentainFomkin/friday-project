@@ -118,7 +118,6 @@ export const Profile = () => {
                                         label="Nickname"
                                         {...formik.getFieldProps('name')}
                                         onBlur={formik.handleBlur}
-
                                     />
                                     <div className={s.sendButton}>
                                         <Button variant="text"

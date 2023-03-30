@@ -3,6 +3,14 @@
 
 }
 
+.header {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    margin-bottom: 60px;
+    padding: 0 70px;
+}
+
 .table {
 
 }
@@ -12,7 +20,8 @@
 }
 
 .tableHeadRow {
-    height: 80px;
+    /*height: 80px;*/
+    
 }
 
 .tableHeadCell {

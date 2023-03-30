@@ -11,29 +11,52 @@ const instance = axios.create({
 
 export const tableAPI = {
     getAllPacks() {
-        instance.get('cards/pack')
+        return instance.get<ResponseType>('cards/pack', {
+            params: {
+                page: 1,
+                pageCount: 50
+            }
+        })
+    },
+    addNewPack(data: AddNewPackType) {
+        return instance.post<CardPacks[]>('cards/pack', data)
     }
-
 
 }
 
 //types
+export type AddNewPackType = {
+    name: string
+    deckCover: string
+    private: boolean
+}
 
+export type PackConfigType = {
+    packName?: string // не обязательно
+    min?: number // не обязательно
+    max?: number // не обязательно
+    page?: number // не обязательно
+    pageCount?: number // не обязательно
+    user_id?: string// чьи колоды не обязательно, или придут все
+    block?: boolean
+}
 
 export type ResponseType = {
+    cardPacks: CardPacks[]
+    cardPacksTotalCount: number// количество колод
+    maxCardsCount: number
+    minCardsCount: number
+    page: number // выбранная страница
+    pageCount: number
+
+}
+export type CardPacks = {
     _id: string
-    email: string
+    user_id: string
+    user_name: string
     name: string
-    avatar?: string
-    publicCardPacksCount: number
-// количество колод
-    token: string
-    created: Date
-    updated: Date
-    isAdmin: boolean
-    verified: boolean // подтвердил ли почту
-    rememberMe: boolean
-
-    error?: string
-
+    cardsCount: number
+    created: string
+    updated: string
+    private: boolean
 }
