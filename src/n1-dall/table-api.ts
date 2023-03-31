@@ -19,7 +19,11 @@ export const tableAPI = {
         })
     },
     addNewPack(data: AddNewPackType) {
-        return instance.post<CardPacks[]>('cards/pack', data)
+        return instance.post<CardPacks>('cards/pack', {
+            cardsPack: {
+                name: data.name
+            }
+        })
     }
 
 }
@@ -27,8 +31,6 @@ export const tableAPI = {
 //types
 export type AddNewPackType = {
     name: string
-    deckCover: string
-    private: boolean
 }
 
 export type PackConfigType = {

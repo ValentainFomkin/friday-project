@@ -1,7 +1,7 @@
 import {authAPI, ProfileInfoType} from "../n1-dall/auth-api";
 import {Dispatch} from "redux";
 import {isLoggedInAC} from "./login-reducer";
-import {CardPacks, ResponseType, tableAPI} from "../n1-dall/table-api";
+import {AddNewPackType, CardPacks, ResponseType, tableAPI} from "../n1-dall/table-api";
 import {v1} from "uuid";
 
 const initialState: InitialStateType = {
@@ -26,11 +26,11 @@ const initialState: InitialStateType = {
             {
                 _id: "",
                 user_id: "",
+                user_name: '',
                 name: "",
                 cardsCount: 0,
                 created: "",
                 updated: "",
-                user_name: '',
                 private: false
             }
         ],
@@ -38,7 +38,7 @@ const initialState: InitialStateType = {
         maxCardsCount: 0,
         minCardsCount: 0,
         page: 0,// выбранная страница
-        pageCount: 0,
+        pageCount: 5,
     }
 
 }
@@ -80,16 +80,17 @@ export const appReducer = (state = initialState, action: ActionType): InitialSta
         case "ADD_NEW_PACK": {
             const newCard: CardPacks = {
                 _id: v1(),
-                user_id: v1(),
-                user_name: 'ADD NEW PACK',
-                name: action.packName,
-                cardsCount: 0,
-                created: new Date().toLocaleDateString(),
-                updated: new Date().toLocaleDateString(),
-                private: action.privateValue,
+                user_id: action.newCard.user_id,
+                user_name: action.newCard.user_name,
+                name: action.newCard.name,
+                cardsCount: action.newCard.cardsCount,
+                created: action.newCard.created,
+                updated: action.newCard.updated,
+                private: action.newCard.private,
             }
             return {
-                ...state, cards: {
+                ...state,
+                cards: {
                     ...state.cards,
                     cardPacks: [newCard, ...state.cards.cardPacks]
                 }
@@ -107,11 +108,7 @@ export const setInitializedAC = (isInitialized: boolean) => ({type: auth_SET_INI
 export const setUserEmailAC = (email: string) => ({type: SET_USER_EMAIL, email} as const)
 export const setNewNamedAC = (newName: string) => ({type: auth_SET_NEW_NICK_NAME, newName} as const)
 export const setAllCardPacksAC = (config: ResponseType) => ({type: GET_ALL_CARD_PACKS, config} as const)
-export const addNewPackAC = (packName: string, privateValue: boolean) => ({
-    type: ADD_NEW_PACK,
-    packName,
-    privateValue
-} as const)
+export const addNewPackAC = (newCard: CardPacks) => ({type: ADD_NEW_PACK, newCard} as const)
 
 // export const setNewUserPasswordAC = (newPassword: string) => ({type: SET_NEW_USER_PASSWORD, newPassword} as const)
 
@@ -159,6 +156,7 @@ export const fetchCardPacksTC = () => (dispatch: Dispatch) => {
         .then(res => {
             dispatch(setAppStatusAC('succeeded'))
             dispatch(setAllCardPacksAC(res.data))
+
         })
         .catch((err) => {
             const error = err.response
@@ -168,12 +166,13 @@ export const fetchCardPacksTC = () => (dispatch: Dispatch) => {
             dispatch(setAppStatusAC('failed'))
         })
 }
-export const addNewPackTC = () => (dispatch: Dispatch) => {
+
+export const addNewPackTC = (data: AddNewPackType) => (dispatch: Dispatch) => {
     dispatch(setAppStatusAC('loading'))
-    tableAPI.getAllPacks()
+    tableAPI.addNewPack(data)
         .then(res => {
             dispatch(setAppStatusAC('succeeded'))
-            dispatch(addNewPackAC('ADD NEW PACK', false))
+            dispatch(addNewPackAC(res.data))
         })
         .catch((err) => {
             const error = err.response
@@ -182,6 +181,7 @@ export const addNewPackTC = () => (dispatch: Dispatch) => {
             dispatch(setAppErrorAC(error))
             dispatch(setAppStatusAC('failed'))
         })
+
 }
 
 

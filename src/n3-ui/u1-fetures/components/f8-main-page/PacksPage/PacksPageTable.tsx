@@ -12,11 +12,13 @@ import SchoolIcon from '@mui/icons-material/School';
 import EditIcon from '@mui/icons-material/Edit';
 import IconButton from "@mui/material/IconButton";
 import {Delete, School} from "@material-ui/icons";
+import {AddNewPackType} from "../../../../../n1-dall/table-api";
 
 export const DataTable = () => {
     const dispatch = useAppDispatch()
     const cardPacks = useAppSelector(s => s.app.cards.cardPacks)
     const user = useAppSelector(s => s.app.user)
+    const cards = useAppSelector(s => s.app.cards)
 
     const iconsAll = () => {
         return <>
@@ -63,7 +65,7 @@ export const DataTable = () => {
             width: 300,
             headerAlign: 'center',
             align: 'center',
-            renderCell: () => rows.map(c => c.userId === user._id ? <div>
+            renderCell: () => <div key={user._id}>
                 <IconButton>
                     <School fontSize={'small'}/>
                 </IconButton>
@@ -73,9 +75,7 @@ export const DataTable = () => {
                 <IconButton onClick={removeCardHandler}>
                     <Delete fontSize={'small'}/>
                 </IconButton>
-            </div> : <IconButton onClick={() => alert('teatching')}>
-                <School fontSize={'small'}/>
-            </IconButton>)
+            </div>
             ,
         },
 
@@ -94,7 +94,10 @@ export const DataTable = () => {
         )
     )
     const addNewPackHandler = () => {
-        dispatch(addNewPackTC())
+        const data: AddNewPackType = {
+            name: 'ADD NEW PACK',
+        }
+        dispatch(addNewPackTC(data))
     }
 
     return (
@@ -123,9 +126,9 @@ export const DataTable = () => {
             <DataGrid
                 rows={rows}
                 columns={columns}
-                getRowId={rows => rows.id}
+                getRowId={row => row.id}
                 pageSizeOptions={[5, 10, 15]}
-                initialState={{pagination: {paginationModel: {pageSize: 5}}}}
+                initialState={{pagination: {paginationModel: {pageSize: cards.pageCount}}}}
             />
 
         </Box>

@@ -1,7 +1,7 @@
 import React, {useEffect} from 'react';
 import {Box, Paper, Table, TableBody, TableCell, TableContainer, TableHead, TableRow} from "@mui/material";
 import s from './PacksListTableStyle.module.css'
-import {addNewPackTC, fetchCardPacksTC} from "../../../../../n2-bll/app-reducer";
+import {fetchCardPacksTC} from "../../../../../n2-bll/app-reducer";
 import {useAppDispatch, useAppSelector} from "../../../../../n2-bll/store";
 import Typography from "@mui/material/Typography";
 import Button from "@mui/material/Button";
@@ -34,7 +34,7 @@ export const PacksListTable = () => {
     //     },
     // ];
     const addNewPackHandler = () => {
-        dispatch(addNewPackTC())
+        // dispatch(addNewPackTC())
     }
 
     return (
