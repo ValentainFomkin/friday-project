@@ -1,0 +1,25 @@
+.container {
+    display: flex;
+    justify-content: space-between;
+    width: 100%;
+    margin-bottom: 20px;
+}
+
+.search {
+    display: flex;
+    flex-direction: column;
+    width: 35%;
+}
+
+
+.myAllButtons {
+    display: flex;
+    flex-direction: column;
+
+}
+
+.buttonsSpan {
+}
+
+.buttons button {
+}

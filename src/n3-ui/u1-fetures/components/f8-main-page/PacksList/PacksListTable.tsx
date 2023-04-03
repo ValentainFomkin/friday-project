@@ -1,4 +1,4 @@
-import React, {useEffect} from 'react';
+import React, {useEffect, useState} from 'react';
 import {
   Box,
   Pagination,
@@ -11,12 +11,7 @@ import {
   TableRow
 } from "@mui/material";
 import s from './PacksListTableStyle.module.css'
-import {
-  addNewPackTC,
-  fetchCardPacksTC,
-  removePackTC,
-  updatePackTC
-} from "../../../../../n2-bll/app-reducer";
+
 import {useAppDispatch, useAppSelector} from "../../../../../n2-bll/store";
 import Typography from "@mui/material/Typography";
 import Button from "@mui/material/Button";
@@ -24,18 +19,32 @@ import IconButton from "@mui/material/IconButton";
 import {Delete, School} from "@material-ui/icons";
 import EditIcon from "@mui/icons-material/Edit";
 import {AddNewPackType} from "../../../../../n1-dall/table-api";
+import {
+  addNewPackTC,
+  fetchCardPacksTC,
+  pageAC,
+  removePackTC,
+  updatePackTC
+} from "../../../../../n2-bll/table-reducer";
+import {TableParams} from "../TableParams/TableParams";
 
 
 export const PacksListTable = () => {
-  const [page, setPage] = React.useState(1);
+  const [page, setPage] = useState(1);
 
-  const tableStatus = useAppSelector(s => s.app.statusForTable)
-  const status = useAppSelector(s => s.app.status)
+  const appStatus = useAppSelector(s => s.app.status)
+  const tableStatus = useAppSelector(s => s.table.statusForTable)
   const user = useAppSelector(s => s.app.user)
-  const cardPacks = useAppSelector(s => s.app.cards.cardPacks)
-
+  const cardPacks = useAppSelector(s => s.table.cards.cardPacks)
+  const cardPacksTotalCount = useAppSelector(s => s.table.cards.cardPacksTotalCount)
+  const maxCardsCount = useAppSelector(s => s.table.cards.maxCardsCount)
+  const minCardsCount = useAppSelector(s => s.table.cards.minCardsCount)
+  const selectedPage = useAppSelector(s => s.table.cards.page)
+  const pageCount = useAppSelector(s => s.table.cards.pageCount)
 
   const dispatch = useAppDispatch()
+
+  const paginationPageCount = Math.ceil(cardPacksTotalCount / pageCount)
 
   const tableData = cardPacks.map(c => ({
     id: c._id,
@@ -49,10 +58,11 @@ export const PacksListTable = () => {
 
   useEffect(() => {
     dispatch(fetchCardPacksTC())
-  }, [])
+  }, [maxCardsCount, minCardsCount, selectedPage, pageCount, cardPacksTotalCount])
 
   const handleChange = (event: React.ChangeEvent<unknown>, value: number) => {
-    setPage(value);
+    setPage(value)
+    dispatch(pageAC(value))
   };
 
 
@@ -62,7 +72,6 @@ export const PacksListTable = () => {
     }
     dispatch(addNewPackTC(data))
   }
-
   const removeCardHandler = (id: string) => {
     dispatch(removePackTC(id))
 
@@ -74,13 +83,13 @@ export const PacksListTable = () => {
 
   return (
     <Box sx={{
-      height: 430,
+      height: 480,
       minWidth: '20%',
       maxWidth: '80%',
       margin: '0 auto'
     }}>
       <div className={s.header}>
-        <Typography variant={'h4'}
+        <Typography variant={'h3'}
                     component={'h4'}
                     sx={{textAlign: 'left', fontWeight: '600',}}
         >
@@ -89,14 +98,18 @@ export const PacksListTable = () => {
         <Button
           disabled={tableStatus === 'loading add button'}
           onClick={addNewPackHandler}
-          sx={{borderRadius: '20px'}}
+          sx={{borderRadius: '20px', width: '20%'}}
           variant={'contained'}
+          size={'large'}
           type="button">
           Add new pack
         </Button>
       </div>
+      <div className={s.tableParams}>
+        <TableParams maxCardsCount={maxCardsCount} minCardsCount={minCardsCount}/>
+      </div>
       <TableContainer className={s.container}
-                      sx={{maxHeight: '400px'}}
+                      sx={{maxHeight: '440px', maxWidth: '100%', minWidth: '60%'}}
                       component={Paper}
       >
         <Table className={s.table}
@@ -171,7 +184,11 @@ export const PacksListTable = () => {
           </TableBody>
         </Table>
       </TableContainer>
-      <Pagination count={10} page={1} onChange={handleChange} shape="rounded"/>
+      <Pagination sx={{mt: 3}}
+                  disabled={appStatus === 'loading'}
+                  count={paginationPageCount}
+                  page={page} onChange={handleChange}
+                  shape="rounded"/>
     </Box>
 
   )

@@ -11,11 +11,19 @@ const instance = axios.create({
 })
 
 export const tableAPI = {
-  getAllPacks() {
+  getAllPacks(page?: number,
+              pageCount?: number,
+              cardPacksTotalCount?: number,
+              maxCardsCount?: number,
+              minCardsCount?: number
+  ) {
     return instance.get<ResponseType>('cards/pack', {
       params: {
-        page: 1,
-        pageCount: 50
+        page: page,
+        pageCount: pageCount,
+        cardPacksTotalCount: cardPacksTotalCount,
+        maxCardsCount: maxCardsCount,
+        minCardsCount: minCardsCount,
       }
     })
   },
@@ -54,15 +62,15 @@ export type UpdateCardPack = {
   name: string
 }
 
-export type PackConfigType = {
-  packName?: string // не обязательно
-  min?: number // не обязательно
-  max?: number // не обязательно
-  page?: number // не обязательно
-  pageCount?: number // не обязательно
-  user_id?: string// чьи колоды не обязательно, или придут все
-  block?: boolean
-}
+// export type PackConfigType = {
+//   packName?: string // не обязательно
+//   min?: number // не обязательно
+//   max?: number // не обязательно
+//   page?: number // не обязательно
+//   pageCount?: number // не обязательно
+//   user_id?: string// чьи колоды не обязательно, или придут все
+//   block?: boolean
+// }
 
 export type ResponseType = {
   cardPacks: CardPacks[]

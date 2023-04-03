@@ -8,11 +8,11 @@
     justify-content: space-between;
     align-items: center;
     margin-bottom: 60px;
-    padding: 0 70px;
+
 }
 
-.table {
-
+.tableParams {
+    width: 100%;
 }
 
 .tableHead {

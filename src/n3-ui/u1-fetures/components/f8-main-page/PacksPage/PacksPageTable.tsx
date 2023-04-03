@@ -6,18 +6,18 @@ import Typography from "@mui/material/Typography";
 import {useAppDispatch, useAppSelector} from "../../../../../n2-bll/store";
 import s from './PacksPage.module.css'
 import Button from "@mui/material/Button";
-import {addNewPackTC, fetchCardPacksTC, removePackTC} from "../../../../../n2-bll/app-reducer";
 import EditIcon from '@mui/icons-material/Edit';
 import IconButton from "@mui/material/IconButton";
 import {Delete, School} from "@material-ui/icons";
 import {AddNewPackType} from "../../../../../n1-dall/table-api";
+import {addNewPackTC, fetchCardPacksTC, removePackTC} from "../../../../../n2-bll/table-reducer";
 
 
 export const PacksPageTable = () => {
   const dispatch = useAppDispatch()
-  const cardPacks = useAppSelector(s => s.app.cards.cardPacks)
+  const cardPacks = useAppSelector(s => s.table.cards.cardPacks)
   const user = useAppSelector(s => s.app.user)
-  const cards = useAppSelector(s => s.app.cards)
+  const cards = useAppSelector(s => s.table.cards)
 
   // const iconsAll = () => {
   //   return <>
