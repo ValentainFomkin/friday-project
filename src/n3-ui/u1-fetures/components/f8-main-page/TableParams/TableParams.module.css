@@ -8,6 +8,7 @@
 .search {
     display: flex;
     flex-direction: column;
+    justify-content: space-between;
     width: 35%;
 }
 
@@ -15,11 +16,47 @@
 .myAllButtons {
     display: flex;
     flex-direction: column;
-
+    justify-content: space-between;
 }
 
 .buttonsSpan {
 }
 
+.buttons {
+    text-align: left;
+}
+
 .buttons button {
+    height: 40px;
+    width: 80px;
+}
+
+.numberOfCards {
+    display: flex;
+    flex-direction: column;
+    justify-content: space-between;
+}
+
+.resetSettings {
+    display: flex;
+    flex-direction: column;
+    justify-content: space-between;
+}
+
+.resetSettingText {
+    text-align: right;
+}
+
+.resetSpan {
+    font-size: 18px;
+    font-weight: 600;
+}
+
+.resetSettingButton {
+    text-align: right;
+}
+
+.resetSettingButton button {
+    width: 137px;
+    height: 40px;
 }

@@ -21,6 +21,8 @@ const MAX_CARD_COUNT = 'MAX_CARD_COUNT'
 const MIN_CARD_COUNT = 'MIN_CARD_COUNT'
 const SELECTED_PAGE = 'SELECTED_PAGE'
 const PAGE_COUNT = 'PAGE_COUNT'
+const SEARCH = 'SEARCH'
+const USER_ID = 'USER_ID'
 
 const initialState: InitialStateType = {
   statusForTable: 'idle',
@@ -43,6 +45,8 @@ const initialState: InitialStateType = {
     minCardsCount: 0,
     page: 0,// выбранная страница
     pageCount: 5,
+    packName: '',
+    user_id: ''
   }
 
 }
@@ -113,6 +117,10 @@ export const tableReducer = (state = initialState, action: ActionType): InitialS
       return {...state, cards: {...state.cards, page: action.page}}
     case "PAGE_COUNT":
       return {...state, cards: {...state.cards, pageCount: action.pageCount}}
+    case "SEARCH":
+      return {...state, cards: {...state.cards, packName: action.packName}}
+    case "USER_ID":
+      return {...state, cards: {...state.cards, user_id: action.user_id}}
     default:
       return state
   }
@@ -154,6 +162,14 @@ export const pageCountAC = (pageCount: number) => ({
   type: PAGE_COUNT,
   pageCount
 } as const)
+export const packNameAC = (packName: string) => ({
+  type: SEARCH,
+  packName
+} as const)
+export const userIdAC = (user_id: string) => ({
+  type: USER_ID,
+  user_id
+} as const)
 
 
 //thunks
@@ -163,10 +179,12 @@ export const fetchCardPacksTC = () => (dispatch: Dispatch, getState: () => AppRo
     pageCount,
     cardPacksTotalCount,
     maxCardsCount,
-    minCardsCount
+    minCardsCount,
+    packName,
+    user_id,
   } = getState().table.cards
   dispatch(setAppStatusAC('loading'))
-  tableAPI.getAllPacks(page, pageCount, cardPacksTotalCount, maxCardsCount, minCardsCount)
+  tableAPI.getAllPacks(page, pageCount, cardPacksTotalCount, maxCardsCount, minCardsCount, packName, user_id)
     .then(res => {
       dispatch(setAppStatusAC('succeeded'))
       dispatch(setAllCardPacksAC(res.data))
@@ -262,6 +280,8 @@ export type InitialStateType = {
     minCardsCount: number
     page: number // выбранная страница
     pageCount: number
+    packName: string
+    user_id: string
   }
 
 }
@@ -276,6 +296,8 @@ export type maxCardsCountActionType = ReturnType<typeof maxCardsCountAC>
 export type minCardsCountActionType = ReturnType<typeof minCardsCountAC>
 export type pageActionType = ReturnType<typeof pageAC>
 export type pageCountActionType = ReturnType<typeof pageCountAC>
+export type packNameActionType = ReturnType<typeof packNameAC>
+export type userIdActionType = ReturnType<typeof userIdAC>
 
 // export type setNewUserPasswordActionType = ReturnType<typeof setNewUserPasswordAC>
 
@@ -290,3 +312,5 @@ export type ActionType =
   | minCardsCountActionType
   | pageActionType
   | pageCountActionType
+  | packNameActionType
+  | userIdActionType

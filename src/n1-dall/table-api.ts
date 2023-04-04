@@ -15,7 +15,9 @@ export const tableAPI = {
               pageCount?: number,
               cardPacksTotalCount?: number,
               maxCardsCount?: number,
-              minCardsCount?: number
+              minCardsCount?: number,
+              packName?: string,
+              user_id?: string,
   ) {
     return instance.get<ResponseType>('cards/pack', {
       params: {
@@ -24,6 +26,8 @@ export const tableAPI = {
         cardPacksTotalCount: cardPacksTotalCount,
         maxCardsCount: maxCardsCount,
         minCardsCount: minCardsCount,
+        packName: packName,
+        user_id: user_id,
       }
     })
   },

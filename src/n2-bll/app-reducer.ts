@@ -8,6 +8,7 @@ const auth_IS_CHANGE_STATUS = 'auth/IS_CHANGE_STATUS'
 const auth_SET_INITIALIZED = 'auth/SET_INITIALIZED'
 const auth_SET_NEW_NICK_NAME = 'auth/SET_NEW_NICK_NAME'
 const SET_USER_EMAIL = 'SET_USER_EMAIL'
+const USER_APP_ID = 'USER_APP_ID'
 
 const initialState: InitialStateType = {
   status: 'idle',
@@ -41,7 +42,8 @@ export const appReducer = (state = initialState, action: ActionType): InitialSta
       return {...state, user: {...state.user, email: action.email}}
     case "auth/SET_NEW_NICK_NAME":
       return {...state, user: {...state.user, name: action.newName}}
-
+    case "USER_APP_ID":
+      return {...state, user: {...state.user, _id: action.userID}}
     default:
       return state
   }
@@ -59,6 +61,7 @@ export const setInitializedAC = (isInitialized: boolean) => ({
 } as const)
 export const setUserEmailAC = (email: string) => ({type: SET_USER_EMAIL, email} as const)
 export const setNewNamedAC = (newName: string) => ({type: auth_SET_NEW_NICK_NAME, newName} as const)
+export const userAppIDdAC = (userID: string) => ({type: USER_APP_ID, userID} as const)
 
 
 //thunks
@@ -86,6 +89,7 @@ export const setInitializedTC = () => (dispatch: Dispatch) => {
       dispatch(isLoggedInAC(true))
       dispatch(setNewNamedAC(res.data.name))
       dispatch(setUserEmailAC(res.data.email))
+      dispatch(userAppIDdAC(res.data._id))
     })
     .catch((err) => {
       const error = err.response
@@ -128,6 +132,7 @@ export type SetAppStatusActionType = ReturnType<typeof setAppStatusAC>
 export type SetInitializedACActionType = ReturnType<typeof setInitializedAC>
 export type setUserEmailActionType = ReturnType<typeof setUserEmailAC>
 export type setNewNickNamedActionType = ReturnType<typeof setNewNamedAC>
+export type userAppIDdActionType = ReturnType<typeof userAppIDdAC>
 
 // export type setNewUserPasswordActionType = ReturnType<typeof setNewUserPasswordAC>
 
@@ -137,3 +142,4 @@ export type ActionType =
   | SetInitializedACActionType
   | setUserEmailActionType
   | setNewNickNamedActionType
+  | userAppIDdActionType

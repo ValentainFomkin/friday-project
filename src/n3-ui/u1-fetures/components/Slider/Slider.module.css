@@ -1,0 +1,15 @@
+.textField {
+    margin-right: 20px;
+    width: 90px;
+
+}
+
+.textField p {
+    text-align: right;
+
+}
+
+.textField:last-child {
+    margin-right: 0;
+    margin-left: 20px;
+}

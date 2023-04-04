@@ -1,4 +1,4 @@
-import React, {useEffect, useState} from 'react';
+import React, {useEffect} from 'react';
 import {
   Box,
   Pagination,
@@ -30,7 +30,6 @@ import {TableParams} from "../TableParams/TableParams";
 
 
 export const PacksListTable = () => {
-  const [page, setPage] = useState(1);
 
   const appStatus = useAppSelector(s => s.app.status)
   const tableStatus = useAppSelector(s => s.table.statusForTable)
@@ -41,10 +40,13 @@ export const PacksListTable = () => {
   const minCardsCount = useAppSelector(s => s.table.cards.minCardsCount)
   const selectedPage = useAppSelector(s => s.table.cards.page)
   const pageCount = useAppSelector(s => s.table.cards.pageCount)
+  const packName = useAppSelector(s => s.table.cards.packName)
+  const user_id = useAppSelector(s => s.table.cards.user_id)
 
   const dispatch = useAppDispatch()
 
   const paginationPageCount = Math.ceil(cardPacksTotalCount / pageCount)
+
 
   const tableData = cardPacks.map(c => ({
     id: c._id,
@@ -58,10 +60,9 @@ export const PacksListTable = () => {
 
   useEffect(() => {
     dispatch(fetchCardPacksTC())
-  }, [maxCardsCount, minCardsCount, selectedPage, pageCount, cardPacksTotalCount])
+  }, [maxCardsCount, minCardsCount, selectedPage, pageCount, cardPacksTotalCount, packName, user_id])
 
   const handleChange = (event: React.ChangeEvent<unknown>, value: number) => {
-    setPage(value)
     dispatch(pageAC(value))
   };
 
@@ -81,6 +82,7 @@ export const PacksListTable = () => {
     dispatch(updatePackTC(data))
   }
 
+  console.log('PackLIST : ' + minCardsCount + ' = min, ' + maxCardsCount + ' = max', typeof minCardsCount)
   return (
     <Box sx={{
       height: 480,
@@ -106,7 +108,7 @@ export const PacksListTable = () => {
         </Button>
       </div>
       <div className={s.tableParams}>
-        <TableParams maxCardsCount={maxCardsCount} minCardsCount={minCardsCount}/>
+        <TableParams packName={packName}/>
       </div>
       <TableContainer className={s.container}
                       sx={{maxHeight: '440px', maxWidth: '100%', minWidth: '60%'}}
@@ -187,7 +189,7 @@ export const PacksListTable = () => {
       <Pagination sx={{mt: 3}}
                   disabled={appStatus === 'loading'}
                   count={paginationPageCount}
-                  page={page} onChange={handleChange}
+                  page={selectedPage} onChange={handleChange}
                   shape="rounded"/>
     </Box>
 

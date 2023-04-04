@@ -1,54 +1,59 @@
-import React, {useState} from 'react';
+import React, {ChangeEvent, useState} from 'react';
 import Box from "@mui/material/Box";
 import TextField from "@mui/material/TextField";
 import {Slider} from "@mui/material";
-import {useAppDispatch} from "../../../../n2-bll/store";
+import {useAppDispatch, useAppSelector} from "../../../../n2-bll/store";
+import s from './Slider.module.css'
+import {minCardsCountAC} from "../../../../n2-bll/table-reducer";
 
 
-export type RangeSliderProps = {
-  max: number
-  min: number
-}
+export const RangeSlider = () => {
+  const maxCardsCount = useAppSelector(s => s.table.cards.maxCardsCount)
+  const minCardsCount = useAppSelector(s => s.table.cards.minCardsCount)
 
-export const RangeSlider: React.FC<RangeSliderProps> = (props) => {
-  const [value, setValue] = useState<number[]>([props.min, props.max]);
   const dispatch = useAppDispatch()
+  const [sliderValue, setSliderValue] = useState<number[]>([minCardsCount, maxCardsCount]);
 
+  console.log('slider' + minCardsCount + ' min', maxCardsCount + ' max')
 
   function valuetext(value: number) {
     return `${value}°C`;
   }
 
   const handleChange = (event: Event, newValue: number | number[]) => {
-    setValue(newValue as number[]);
+    setSliderValue(newValue as number[]);
   };
 
+  const minHandler = (e: ChangeEvent<HTMLInputElement | HTMLTextAreaElement>) => {
+    dispatch(minCardsCountAC(+e.target.value))
+  }
   return (
     <Box sx={{width: 400, display: 'flex', alignItems: 'center', justifyContent: 'space-between'}}>
-      <TextField
-        required
-        size={'small'}
-        value={value[0]}
-        InputProps={{
-          inputMode: 'numeric'
-        }}
-      />
+      <div className={s.textField}>
+        <TextField
+          onChange={minHandler}
+
+          size={'small'}
+          InputProps={{
+            inputMode: 'numeric',
+          }}
+        />
+      </div>
 
       <Slider
-        value={value}
+        value={sliderValue}
         onChange={handleChange}
-        getAriaValueText={valuetext}
         disableSwap
       />
-      <TextField
-        required={true}
-        size={'small'}
-        value={value[1]}
-        InputProps={{
-          inputMode: 'numeric',
-        }}>
-        123
-      </TextField>
+      <div className={s.textField}>
+        <TextField
+
+          // onChange={maxHandler}
+          size={'small'}
+          InputProps={{
+            inputMode: 'numeric',
+          }}/>
+      </div>
 
     </Box>
   );
