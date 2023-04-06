@@ -102,6 +102,7 @@ export const PacksPageTable = () => {
   const addNewPackHandler = () => {
     const data: AddNewPackType = {
       name: 'ADD NEW PACK',
+      private: false
     }
     dispatch(addNewPackTC(data))
     // dispatch(fetchCardPacksTC())

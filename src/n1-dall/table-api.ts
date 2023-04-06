@@ -1,19 +1,9 @@
-import axios from 'axios'
+import {instance} from "../n3-ui/u1-fetures/c1-utils/Instance/instance";
 
-
-const instance = axios.create({
-  //baseURL: process.env.NODE_ENV === 'development'  ? 'Enter url for local backend' : 'https://neko-back.herokuapp.com/2.0/' ,
-  baseURL: 'https://neko-back.herokuapp.com/2.0/',
-  withCredentials: true,
-  headers: {
-    'API-KEY': '1829c64f-03ce-4449-b50f-e899459dd9bd'
-  }
-})
 
 export const tableAPI = {
   getAllPacks(page?: number,
               pageCount?: number,
-              cardPacksTotalCount?: number,
               maxCardsCount?: number,
               minCardsCount?: number,
               packName?: string,
@@ -23,9 +13,8 @@ export const tableAPI = {
       params: {
         page: page,
         pageCount: pageCount,
-        cardPacksTotalCount: cardPacksTotalCount,
-        maxCardsCount: maxCardsCount,
-        minCardsCount: minCardsCount,
+        max: maxCardsCount,
+        min: minCardsCount,
         packName: packName,
         user_id: user_id,
       }
@@ -34,7 +23,8 @@ export const tableAPI = {
   addNewPack(data: AddNewPackType) {
     return instance.post<CardPacks>('cards/pack', {
       cardsPack: {
-        name: data.name
+        name: data.name,
+        private: data.private
       }
     })
   },
@@ -59,22 +49,14 @@ export const tableAPI = {
 //types
 export type AddNewPackType = {
   name: string
+  deckCover?: string
+  private: boolean
 }
 
 export type UpdateCardPack = {
   _id: string
   name: string
 }
-
-// export type PackConfigType = {
-//   packName?: string // не обязательно
-//   min?: number // не обязательно
-//   max?: number // не обязательно
-//   page?: number // не обязательно
-//   pageCount?: number // не обязательно
-//   user_id?: string// чьи колоды не обязательно, или придут все
-//   block?: boolean
-// }
 
 export type ResponseType = {
   cardPacks: CardPacks[]
@@ -83,7 +65,8 @@ export type ResponseType = {
   minCardsCount: number
   page: number // выбранная страница
   pageCount: number
-
+  packName: string
+  user_id: string
 }
 export type CardPacks = {
   _id: string

@@ -1,15 +1,17 @@
-.textField {
+.typography {
     margin-right: 20px;
-    width: 90px;
+    width: 20px;
+    /*border: 2px solid red;*/
+
 
 }
 
-.textField p {
-    text-align: right;
+.typography p {
+    text-align: center;
 
 }
 
-.textField:last-child {
+.typography:last-child {
     margin-right: 0;
     margin-left: 20px;
 }

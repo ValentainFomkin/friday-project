@@ -3,10 +3,9 @@ import CancelIcon from '@mui/icons-material/Cancel';
 import IconButton from "@mui/material/IconButton";
 import {useAppDispatch} from "../../../../n2-bll/store";
 import {
-  maxCardsCountAC,
-  minCardsCountAC,
-  packNameAC,
+  minMaxCardsCountAC,
   pageAC,
+  searchValueAC,
   userIdAC
 } from "../../../../n2-bll/table-reducer";
 
@@ -16,16 +15,16 @@ type CloseSettingsProps = {
   setSearchValue: (searchValue: string) => void
 }
 
+
 export const CloseSettings: React.FC<CloseSettingsProps> = (props) => {
   const dispatch = useAppDispatch()
   const {setContainedButton, setSearchValue} = props
   const onClickHandler = () => {
-    dispatch(packNameAC(''))
+    dispatch(searchValueAC(''))
     setSearchValue('')
-    dispatch(userIdAC(''))
     setContainedButton(false)
-    dispatch(maxCardsCountAC(110))
-    dispatch(minCardsCountAC(0))
+    dispatch(userIdAC(''))
+    dispatch(minMaxCardsCountAC(0, 110))
     dispatch(pageAC(1))
   }
   return (

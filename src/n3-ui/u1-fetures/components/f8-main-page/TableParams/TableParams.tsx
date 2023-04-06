@@ -1,13 +1,15 @@
-import React, {ChangeEvent, useState} from 'react';
-import TextField from "@mui/material/TextField";
+import React, {ChangeEvent, useEffect, useState} from 'react';
 import Button from '@mui/material/Button/Button';
 import Typography from "@mui/material/Typography";
 import {RangeSlider} from "../../Slider/Slider";
 import s from './TableParams.module.css'
 import {CloseSettings} from "../../CloseSettings/CloseSettings";
 import {useAppDispatch, useAppSelector} from "../../../../../n2-bll/store";
-import {packNameAC, userIdAC} from "../../../../../n2-bll/table-reducer";
-import {debounce} from "lodash";
+import {searchValueAC, userIdAC} from "../../../../../n2-bll/table-reducer";
+import InputBase from "@mui/material/InputBase";
+import Paper from "@mui/material/Paper";
+import IconButton from "@mui/material/IconButton";
+import {CloseRounded} from "@material-ui/icons";
 
 
 export type TableParamsProps = {
@@ -16,19 +18,21 @@ export type TableParamsProps = {
 
 export const TableParams: React.FC<TableParamsProps> = (props) => {
   const dispatch = useAppDispatch()
-
   const user = useAppSelector(s => s.app.user)
 
-
   const [containedButton, setContainedButton] = useState(false)
+  const [searchValue, setSearchValue] = useState('')
+  const [timerId, setTimerId] = useState<NodeJS.Timer | null>(null)
 
-  const [searchValue, setSearchValue] = useState<string>('')
-  const searchHandler = (e: ChangeEvent<HTMLInputElement | HTMLTextAreaElement>) => {
-    e.target && setSearchValue(e.target.value)
-    dispatch(packNameAC(searchValue))
-  }
-
-  const debounceQuery = debounce(searchHandler, 1000)
+  useEffect(() => {
+    if (timerId) {
+      clearTimeout(timerId)
+    }
+    setTimerId(setTimeout(() => {
+      dispatch(searchValueAC(searchValue))
+      setTimerId(null)
+    }, 1500))
+  }, [searchValue])
 
 
   const getMyCardsHandler = () => {
@@ -39,7 +43,10 @@ export const TableParams: React.FC<TableParamsProps> = (props) => {
     setContainedButton(false)
     dispatch(userIdAC(''))
   }
-
+  const closeSearchHandler = () => {
+    setSearchValue('')
+    dispatch(searchValueAC(''))
+  }
   return (
     <div className={s.container}>
       <div className={s.search}>
@@ -48,17 +55,27 @@ export const TableParams: React.FC<TableParamsProps> = (props) => {
         >
           Search
         </Typography>
-        <TextField
-          onChange={debounceQuery}
-          size={'small'}
-          label="Search"
-          InputProps={{
-            type: 'search',
-            // size: 'small'
-          }}
-        />
+        <Paper variant={'outlined'}
+               sx={{
+                 p: '2px 4px',
+                 display: 'flex',
+                 justifyContent: 'space-between',
+                 alignItems: 'center'
+               }}>
+          <InputBase
+            className={s.searchInput}
+            // onChange={debounceQuery}
+            type={'text'}
+            placeholder="Card search "
+            value={searchValue}
+            onChange={(e: ChangeEvent<HTMLInputElement>) => setSearchValue(e.currentTarget.value)}
+            // defaultValue={props.packName}
+          />
+          <IconButton onClick={closeSearchHandler}>
+            <CloseRounded/>
+          </IconButton>
+        </Paper>
       </div>
-
 
       <div className={s.myAllButtons}>
         <div className={s.buttonsSpan}>
@@ -83,8 +100,8 @@ export const TableParams: React.FC<TableParamsProps> = (props) => {
 
 
       <div className={s.numberOfCards}>
-        <Typography sx={{fontWeight: '600', fontSize: '17px'}}
-                    align={'left'}>
+        <Typography sx={{fontWeight: '600', fontSize: '17px',}}
+                    align={'center'}>
           Number of cards
         </Typography>
         <RangeSlider/>

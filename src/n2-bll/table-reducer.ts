@@ -6,7 +6,6 @@ import {
   tableAPI,
   UpdateCardPack
 } from "../n1-dall/table-api";
-import {v1} from "uuid";
 import {AppRootStateType} from "./store";
 import {setAppErrorAC, setAppStatusAC} from "./app-reducer";
 
@@ -41,11 +40,11 @@ const initialState: InitialStateType = {
       }
     ],
     cardPacksTotalCount: 0,   // количество колод
-    maxCardsCount: 0,
+    maxCardsCount: 110,
     minCardsCount: 0,
-    page: 0,// выбранная страница
+    page: 1,// выбранная страница
     pageCount: 5,
-    packName: '',
+    searchValue: '',
     user_id: ''
   }
 
@@ -59,30 +58,20 @@ export const tableReducer = (state = initialState, action: ActionType): InitialS
         ...state,
         cards: {
           ...state.cards,
-          cardPacks: action.config.cardPacks.map(p => ({...p})),
           cardPacksTotalCount: action.config.cardPacksTotalCount,
-          maxCardsCount: action.config.maxCardsCount,
-          minCardsCount: action.config.minCardsCount,
-          page: action.config.page,
-          pageCount: action.config.pageCount,
-        },
+          cardPacks: action.config.cardPacks,
+        }
       }
     case "ADD_NEW_PACK": {
-      const newCard: CardPacks = {
-        _id: v1(),
-        user_id: action.newCard.user_id,
-        user_name: action.newCard.user_name,
-        name: action.newCard.name,
-        cardsCount: action.newCard.cardsCount,
-        created: action.newCard.created,
-        updated: action.newCard.updated,
-        private: action.newCard.private,
-      }
       return {
         ...state,
         cards: {
           ...state.cards,
-          cardPacks: [newCard, ...state.cards.cardPacks]
+          cardPacks: [{
+            ...action.newCard,
+            name: action.newCard.name,
+            private: action.newCard.private
+          }, ...state.cards.cardPacks]
         }
       }
     }
@@ -107,18 +96,21 @@ export const tableReducer = (state = initialState, action: ActionType): InitialS
       }
     case "CHANGE_STATUS_PACK":
       return {...state, statusForTable: action.status}
-    case "CARD_PACK_TOTAL_COUNT":
-      return {...state, cards: {...state.cards, cardPacksTotalCount: action.cardPackCount}}
     case "MAX_CARD_COUNT":
-      return {...state, cards: {...state.cards, maxCardsCount: action.maxCardsCount}}
-    case "MIN_CARD_COUNT":
-      return {...state, cards: {...state.cards, minCardsCount: action.minCardsCount}}
+      return {
+        ...state,
+        cards: {
+          ...state.cards,
+          minCardsCount: action.minCardsCount,
+          maxCardsCount: action.maxCardsCount
+        }
+      }
     case "SELECTED_PAGE":
       return {...state, cards: {...state.cards, page: action.page}}
     case "PAGE_COUNT":
       return {...state, cards: {...state.cards, pageCount: action.pageCount}}
     case "SEARCH":
-      return {...state, cards: {...state.cards, packName: action.packName}}
+      return {...state, cards: {...state.cards, searchValue: action.searchValue}}
     case "USER_ID":
       return {...state, cards: {...state.cards, user_id: action.user_id}}
     default:
@@ -131,7 +123,10 @@ export const setAllCardPacksAC = (config: ResponseType) => ({
   type: GET_ALL_CARD_PACKS,
   config
 } as const)
-export const addNewPackAC = (newCard: CardPacks) => ({type: ADD_NEW_PACK, newCard} as const)
+export const addNewPackAC = (newCard: CardPacks) => ({
+  type: ADD_NEW_PACK,
+  newCard
+} as const)
 export const removePackAC = (packID: string) => ({type: REMOVE_PACK, packID} as const)
 export const updatePackAC = (packID: string, newName: string) => ({
   type: UPDATE_PACK,
@@ -142,16 +137,9 @@ export const setTableStatusAC = (status: TableStatusType) => ({
   type: CHANGE_STATUS_PACK,
   status
 } as const)
-export const cardPackTotalCountAC = (cardPackCount: number) => ({
-  type: CARD_PACK_TOTAL_COUNT,
-  cardPackCount
-} as const)
-export const maxCardsCountAC = (maxCardsCount: number) => ({
+export const minMaxCardsCountAC = (minCardsCount: number, maxCardsCount: number) => ({
   type: MAX_CARD_COUNT,
-  maxCardsCount
-} as const)
-export const minCardsCountAC = (minCardsCount: number) => ({
-  type: MIN_CARD_COUNT,
+  maxCardsCount,
   minCardsCount
 } as const)
 export const pageAC = (page: number) => ({
@@ -162,9 +150,9 @@ export const pageCountAC = (pageCount: number) => ({
   type: PAGE_COUNT,
   pageCount
 } as const)
-export const packNameAC = (packName: string) => ({
+export const searchValueAC = (searchValue: string) => ({
   type: SEARCH,
-  packName
+  searchValue
 } as const)
 export const userIdAC = (user_id: string) => ({
   type: USER_ID,
@@ -177,18 +165,24 @@ export const fetchCardPacksTC = () => (dispatch: Dispatch, getState: () => AppRo
   const {
     page,
     pageCount,
-    cardPacksTotalCount,
     maxCardsCount,
     minCardsCount,
-    packName,
+    searchValue,
     user_id,
   } = getState().table.cards
+  // console.log(minCardsCount, 'thunk creator')
   dispatch(setAppStatusAC('loading'))
-  tableAPI.getAllPacks(page, pageCount, cardPacksTotalCount, maxCardsCount, minCardsCount, packName, user_id)
+  tableAPI.getAllPacks(
+    page,
+    pageCount,
+    maxCardsCount,
+    minCardsCount,
+    searchValue,
+    user_id)
     .then(res => {
       dispatch(setAppStatusAC('succeeded'))
       dispatch(setAllCardPacksAC(res.data))
-
+      // console.log(res.data, 'res data')
     })
     .catch((err) => {
       const error = err.response
@@ -198,7 +192,7 @@ export const fetchCardPacksTC = () => (dispatch: Dispatch, getState: () => AppRo
       dispatch(setAppStatusAC('failed'))
     })
 }
-export const addNewPackTC = (data: AddNewPackType) => (dispatch: Dispatch<AnyAction | any>) => {
+export const addNewPackTC = (data: AddNewPackType) => (dispatch: Dispatch<AnyAction | any>, getState: () => AppRootStateType) => {
   dispatch(setTableStatusAC('loading add button'))
   tableAPI.addNewPack(data)
     .then(res => {
@@ -280,7 +274,7 @@ export type InitialStateType = {
     minCardsCount: number
     page: number // выбранная страница
     pageCount: number
-    packName: string
+    searchValue: string
     user_id: string
   }
 
@@ -291,15 +285,12 @@ export type addNewPackActionType = ReturnType<typeof addNewPackAC>
 export type removePackActionType = ReturnType<typeof removePackAC>
 export type updatePackActionType = ReturnType<typeof updatePackAC>
 export type setTableStatusActionType = ReturnType<typeof setTableStatusAC>
-export type cardPackTotalCountActionType = ReturnType<typeof cardPackTotalCountAC>
-export type maxCardsCountActionType = ReturnType<typeof maxCardsCountAC>
-export type minCardsCountActionType = ReturnType<typeof minCardsCountAC>
+export type minMaxCardsCountActionType = ReturnType<typeof minMaxCardsCountAC>
 export type pageActionType = ReturnType<typeof pageAC>
 export type pageCountActionType = ReturnType<typeof pageCountAC>
-export type packNameActionType = ReturnType<typeof packNameAC>
+export type searchValueActionType = ReturnType<typeof searchValueAC>
 export type userIdActionType = ReturnType<typeof userIdAC>
 
-// export type setNewUserPasswordActionType = ReturnType<typeof setNewUserPasswordAC>
 
 export type ActionType =
   | setAllCardPacksActionType
@@ -307,10 +298,8 @@ export type ActionType =
   | removePackActionType
   | updatePackActionType
   | setTableStatusActionType
-  | cardPackTotalCountActionType
-  | maxCardsCountActionType
-  | minCardsCountActionType
+  | minMaxCardsCountActionType
   | pageActionType
   | pageCountActionType
-  | packNameActionType
+  | searchValueActionType
   | userIdActionType
