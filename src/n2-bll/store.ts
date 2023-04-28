@@ -6,14 +6,17 @@ import {registerReducer} from "./register-reducer";
 import {loginReducer} from "./login-reducer";
 import {forgotReducer} from "./forgot-reducer";
 import {tableReducer} from "./table-reducer";
+import {packsReducer} from "./packs-reducer";
 
 
 const rootReducer = combineReducers({
-  app: appReducer,
-  register: registerReducer,
-  login: loginReducer,
-  forgot: forgotReducer,
-  table: tableReducer,
+   app: appReducer,
+   register: registerReducer,
+   login: loginReducer,
+   forgot: forgotReducer,
+   table: tableReducer,
+   packs: packsReducer,
+
 })
 
 export const store = legacy_createStore(rootReducer, applyMiddleware(thunkMiddleware))

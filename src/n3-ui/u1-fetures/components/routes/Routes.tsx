@@ -9,25 +9,29 @@ import {Registration} from "../f3-registration/Registration";
 import {PATH} from "./paths-routes/PathRoutes";
 import {CheckEmail} from "../f5-password-recovery/p1-check-email/CheckEmail";
 import {MainPage} from "../f8-main-page/MainPage";
+import {CardsListTable} from "../f8-main-page/CardsList/CardsListTable";
+
 
 export const RoutesComponent = () => {
 
-    const routs = useRoutes([
-        {path: PATH.HOME_PAGE_PATH, element: <MainPage/>},
-        {path: PATH.LOGIN_PATH, element: <Login/>},
-        {path: PATH.REGISTRATION_PATH, element: <Registration/>},
-        {path: PATH.PROFILE_PATH, element: <Profile/>},
-        {path: PATH.ERROR_PATH, element: <div>404: PAGE NOT FOUND</div>},
-        {path: PATH.PASSWORD_RECOVERY_PATH, element: <PasswordRecovery/>},
-        {path: PATH.CHECK_EMAIL_PATH, element: <CheckEmail/>},
-        {path: PATH.ENTER_NEW_PASSWORD_PATH, element: <EnterNewPassword/>},
-        // {path: `set-new-password/:token`, element: <EnterNewPassword/>},
-        {path: PATH.SUPER_COMPONENT_TEST_PATH, element: <AllSuperComponents/>},
-    ])
-    return (
-        <>
-            {routs}
-        </>
-    );
+   const routs = useRoutes([
+      {path: PATH.HOME_PAGE_PATH, element: <MainPage/>},
+      {path: PATH.LOGIN_PATH, element: <Login/>},
+      {path: PATH.REGISTRATION_PATH, element: <Registration/>},
+      {path: PATH.PROFILE_PATH, element: <Profile/>},
+      {path: PATH.ERROR_PATH, element: <div>404: PAGE NOT FOUND</div>},
+      {path: PATH.PASSWORD_RECOVERY_PATH, element: <PasswordRecovery/>},
+      {path: PATH.CHECK_EMAIL_PATH, element: <CheckEmail/>},
+      {path: PATH.ENTER_NEW_PASSWORD_PATH, element: <EnterNewPassword/>},
+      // {path: `set-new-password/:token`, element: <EnterNewPassword/>},
+      {path: PATH.SUPER_COMPONENT_TEST_PATH, element: <AllSuperComponents/>},
+      {path: PATH.USER_CARD_PATH, element: <CardsListTable/>},
+
+   ])
+   return (
+      <>
+         {routs}
+      </>
+   );
 };
 

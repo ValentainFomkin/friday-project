@@ -1,0 +1,7 @@
+.tableRow:hover {
+    background-color: #f5f5f5;
+}
+
+.cardName {
+    font-weight: 600;
+}
