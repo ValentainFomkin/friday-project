@@ -2,13 +2,13 @@ import React, {useEffect} from 'react';
 import {Box, Pagination, Paper, Table, TableContainer} from "@mui/material";
 import s from './CardsListTableStyle.module.css'
 
-import {useAppDispatch, useAppSelector} from "../../../../../n2-bll/store";
+import {useAppDispatch, useAppSelector} from "n2-bll/store";
 import Typography from "@mui/material/Typography";
 import Button from "@mui/material/Button";
-import {AddNewPackType} from "../../../../../n1-dall/table-api";
-import {addNewPackTC, removePackTC, updatePackTC} from "../../../../../n2-bll/table-reducer";
+import {AddNewPackType} from "n1-dall/table-api";
+import {addNewPackTC, removePackTC, updatePackTC} from "n2-bll/table-reducer";
 
-import {fetchCardsTC, pageCardAC} from "../../../../../n2-bll/packs-reducer";
+import {fetchCardsTC, pageCardAC} from "n2-bll/packs-reducer";
 import {BodyCardTable} from "./BodyCardTable/BodyCardTable";
 import {HeadCardTable} from "./HeadCardTable/HeadCardTable";
 import {TableCardParams} from "./CardParams/CardParams";
@@ -20,8 +20,8 @@ export const CardsListTable = () => {
    const tableStatus = useAppSelector(s => s.table.statusForTable)
    const cards = useAppSelector(s => s.packs.cards)
    const cardsTotalCount = useAppSelector(s => s.packs.searchParams.cardsTotalCount)
-   // const maxCardsCount = useAppSelector(s => s.table.cards.maxCardsCount)
-   // const minCardsCount = useAppSelector(s => s.table.cards.minCardsCount)
+   const maxGrade = useAppSelector(s => s.packs.searchParams.max)
+   const minGrade = useAppSelector(s => s.packs.searchParams.min)
    const selectedPage = useAppSelector(s => s.packs.searchParams.page)
    const pageCount = useAppSelector(s => s.packs.searchParams.pageCount)
    // const searchValue = useAppSelector(s => s.table.cards.searchValue)
@@ -29,7 +29,14 @@ export const CardsListTable = () => {
 
    const dispatch = useAppDispatch()
 
-   const paginationPageCount = Math.ceil(cardsTotalCount / pageCount)
+   useEffect(() => {
+      dispatch(fetchCardsTC())
+      console.log('render Table Cards')
+   }, [selectedPage, pageCount, cardsTotalCount])
+
+   const paginationPageCount = Math.ceil(cardsTotalCount! / pageCount!)
+
+   console.log(paginationPageCount)
 
    const tableData = cards.map(c => ({
       id: c._id,
@@ -41,10 +48,6 @@ export const CardsListTable = () => {
       actions: ''
    }))
 
-   useEffect(() => {
-      dispatch(fetchCardsTC())
-      console.log('render Table Cards')
-   }, [])
 
    const handleChange = (event: React.ChangeEvent<unknown>, value: number) => {
       dispatch(pageCardAC(value))
@@ -52,7 +55,7 @@ export const CardsListTable = () => {
 
 
    const addNewCardHandler = () => {
-      console.log('add new page')
+      // console.log('add new page')
       const data: AddNewPackType = {
          name: 'ADD NEW PACK',
          private: false
@@ -68,7 +71,6 @@ export const CardsListTable = () => {
       dispatch(updatePackTC(data))
    }
 
-   // console.log('PackLIST : ' + 'min = ' + minCardsCount + ', max = ' + maxCardsCount)
    return (
       <Box sx={{
          height: 480,
@@ -114,7 +116,7 @@ export const CardsListTable = () => {
          <Pagination sx={{mt: 3}}
                      disabled={appStatus === 'loading'}
                      count={paginationPageCount}
-                     page={selectedPage} onChange={handleChange}
+                     page={selectedPage!} onChange={handleChange}
                      shape="rounded"/>
       </Box>
 

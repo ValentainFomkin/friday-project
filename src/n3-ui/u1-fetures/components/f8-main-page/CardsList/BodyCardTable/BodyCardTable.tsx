@@ -27,24 +27,14 @@ type BodyTable = {
 
 export const BodyCardTable: React.FC<BodyTable> = (props) => {
    const {tableData, updateHandler, removeCardHandler} = props
-   const user = useAppSelector(s => s.app.user)
    const searchParamsCards = useAppSelector(s => s.packs.searchParams)
-   const tableStatus = useAppSelector(s => s.table.statusForTable)
 
-   const redirectOnCardHandler = (id: string) => {
-      alert(`card - ${id}`)
-   }
 
    return (
       <TableBody>
          {
             tableData.map(row => (
-
-
-               <TableRow key={row.id}
-                         onClick={() => redirectOnCardHandler(row.id)}
-                         className={s.tableRow}
-               >
+               <TableRow key={row.id} className={s.tableRow}>
                   <TableCell align={'left'} className={s.question}>{row.question}</TableCell>
                   <TableCell align={'center'}>{row.answer}</TableCell>
                   <TableCell align={'center'}>{row.lastUpdated}</TableCell>

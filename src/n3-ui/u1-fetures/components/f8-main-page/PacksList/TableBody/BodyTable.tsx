@@ -5,10 +5,11 @@ import TableBody from "@mui/material/TableBody";
 import IconButton from "@mui/material/IconButton";
 import {Delete, School} from "@material-ui/icons";
 import EditIcon from "@mui/icons-material/Edit";
-import {useAppDispatch, useAppSelector} from "../../../../../../n2-bll/store";
-import {Navigate} from "react-router-dom";
-import {PATH} from "../../../routes/paths-routes/PathRoutes";
+import {useAppDispatch, useAppSelector} from "n2-bll/store";
 import s from './BodyTable.module.css'
+import {useNavigate} from "react-router-dom";
+import {PATH} from "n3-ui/u1-fetures/components/routes/paths-routes/PathRoutes";
+import {cardsPackIdAC} from "n2-bll/packs-reducer";
 
 
 type TableDataType = {
@@ -30,14 +31,15 @@ type BodyTable = {
 export const BodyTable: React.FC<BodyTable> = (props) => {
    const {tableData, updateHandler, removeCardHandler} = props
    const user = useAppSelector(s => s.app.user)
-   const searchParamsCards = useAppSelector(s => s.packs.searchParams)
+   const packId = useAppSelector(s => s.packs.searchParams.cardsPack_id)
    const tableStatus = useAppSelector(s => s.table.statusForTable)
    const dispatch = useAppDispatch()
+   const navigate = useNavigate()
 
-   const redirectOnCardHandler = (id: string, name: string) => {
 
-      return <Navigate to={PATH.USER_CARD_PATH}/>
-
+   const redirectOnCardHandler = (id: string) => {
+      dispatch(cardsPackIdAC(id))
+      navigate(`${PATH.USER_CARD_PATH}`)
    }
 
    return (
@@ -47,7 +49,7 @@ export const BodyTable: React.FC<BodyTable> = (props) => {
 
 
                <TableRow key={row.id}
-                         onClick={() => redirectOnCardHandler(row.id, row.createdBy)}
+                         onClick={() => redirectOnCardHandler(row.id)}
                          className={s.tableRow}
                >
                   <TableCell align={'left'} className={s.cardName}>{row.firstName}</TableCell>

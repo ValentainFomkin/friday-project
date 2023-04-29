@@ -1,17 +1,18 @@
-import {instance} from "../n3-ui/u1-fetures/c1-utils/Instance/instance";
+import {instance} from "n3-ui/u1-fetures/c1-utils/Instance/instance";
 
 
 export const packsAPI = {
 
    getAllCards(params: SearchParamsType) {
-      return instance.post<ResponseTypePacks>('cards/card', {}, {
+      return instance.get<ResponseTypePacks>('cards/card', {
          params: {
-            cardAnswer: params.cardAnswer,
-            cardQuestion: params.cardQuestion,
+            // ...params
+            // cardAnswer: params.cardAnswer,
+            // cardQuestion: params.cardQuestion,
             cardsPack_id: params.cardsPack_id,
-            min: params.min,
-            max: params.max,
-            sortCards: params.sortCards,
+            // min: params.min,
+            // max: params.max,
+            // sortCards: params.sortCards,
             page: params.page,
             pageCount: params.pageCount,
          }
@@ -44,14 +45,14 @@ export type CardType = {
    _id: string
 }
 export type SearchParamsType = {
-   cardAnswer: string,
-   cardQuestion: string,
-   cardsPack_id: string,
-   min: number,
-   max: number,
-   sortCards: number,
-   page: number,
-   pageCount: number,
-   cardsTotalCount: number,
-   _id: string,
+   cardAnswer: string | null
+   cardQuestion: string | null
+   cardsPack_id: string | null
+   min: number | null
+   max: number | null
+   sortCards: number | null
+   page: number | null
+   pageCount: number | null
+   cardsTotalCount: number | null
+   _id: string | null
 }
