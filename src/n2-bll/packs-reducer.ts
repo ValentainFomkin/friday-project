@@ -16,12 +16,12 @@ const initialState: InitialStateType = {
       cardAnswer: '',
       cardQuestion: '',
       cardsPack_id: '',
-      min: null as number | null,
-      max: null as number | null,
-      sortCards: null as number | null,
-      page: null as number | null,
-      pageCount: null as number | null,
-      cardsTotalCount: null as number | null,
+      min: 0,
+      max: 0,
+      sortCards: 0,
+      page: 1,
+      pageCount: 5,
+      cardsTotalCount: 0,
       _id: '',
    }
 }

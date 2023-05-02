@@ -9,7 +9,6 @@ import {useAppDispatch, useAppSelector} from "n2-bll/store";
 import s from './BodyTable.module.css'
 import {useNavigate} from "react-router-dom";
 import {PATH} from "n3-ui/u1-fetures/components/routes/paths-routes/PathRoutes";
-import {cardsPackIdAC} from "n2-bll/packs-reducer";
 
 
 type TableDataType = {
@@ -31,15 +30,14 @@ type BodyTable = {
 export const BodyTable: React.FC<BodyTable> = (props) => {
    const {tableData, updateHandler, removeCardHandler} = props
    const user = useAppSelector(s => s.app.user)
-   const packId = useAppSelector(s => s.packs.searchParams.cardsPack_id)
+   // const packId = useAppSelector(s => s.packs.searchParams.cardsPack_id)
    const tableStatus = useAppSelector(s => s.table.statusForTable)
    const dispatch = useAppDispatch()
    const navigate = useNavigate()
 
 
    const redirectOnCardHandler = (id: string) => {
-      dispatch(cardsPackIdAC(id))
-      navigate(`${PATH.USER_CARD_PATH}`)
+      navigate(`${PATH.USER_CARD_PATH}?id=${id}`)
    }
 
    return (

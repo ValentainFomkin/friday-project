@@ -8,13 +8,17 @@ import Button from "@mui/material/Button";
 import {AddNewPackType} from "n1-dall/table-api";
 import {addNewPackTC, removePackTC, updatePackTC} from "n2-bll/table-reducer";
 
-import {fetchCardsTC, pageCardAC} from "n2-bll/packs-reducer";
+import {cardsPackIdAC, fetchCardsTC, pageCardAC} from "n2-bll/packs-reducer";
 import {BodyCardTable} from "./BodyCardTable/BodyCardTable";
 import {HeadCardTable} from "./HeadCardTable/HeadCardTable";
 import {TableCardParams} from "./CardParams/CardParams";
+import {useSearchParams} from "react-router-dom";
 
 
 export const CardsListTable = () => {
+
+   const [params, setParams] = useSearchParams()
+   const dispatch = useAppDispatch()
 
    const appStatus = useAppSelector(s => s.app.status)
    const tableStatus = useAppSelector(s => s.table.statusForTable)
@@ -25,18 +29,24 @@ export const CardsListTable = () => {
    const selectedPage = useAppSelector(s => s.packs.searchParams.page)
    const pageCount = useAppSelector(s => s.packs.searchParams.pageCount)
    // const searchValue = useAppSelector(s => s.table.cards.searchValue)
-   // const user_id = useAppSelector(s => s.table.cards.user_id)
+   const cardsPackId = useAppSelector(s => s.packs.searchParams.cardsPack_id)
 
-   const dispatch = useAppDispatch()
 
    useEffect(() => {
+      if (!cardsPackId) return
+
       dispatch(fetchCardsTC())
-      console.log('render Table Cards')
-   }, [selectedPage, pageCount, cardsTotalCount])
+   }, [selectedPage, pageCount, cardsTotalCount, cardsPackId])
+
+   useEffect(() => {
+      const id = params.get('id')
+      if (!id) return
+      dispatch(cardsPackIdAC(id))
+
+   }, [params])
 
    const paginationPageCount = Math.ceil(cardsTotalCount! / pageCount!)
 
-   console.log(paginationPageCount)
 
    const tableData = cards.map(c => ({
       id: c._id,
@@ -116,7 +126,7 @@ export const CardsListTable = () => {
          <Pagination sx={{mt: 3}}
                      disabled={appStatus === 'loading'}
                      count={paginationPageCount}
-                     page={selectedPage!} onChange={handleChange}
+                     page={selectedPage} onChange={handleChange}
                      shape="rounded"/>
       </Box>
 

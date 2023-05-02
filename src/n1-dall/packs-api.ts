@@ -45,14 +45,14 @@ export type CardType = {
    _id: string
 }
 export type SearchParamsType = {
-   cardAnswer: string | null
-   cardQuestion: string | null
-   cardsPack_id: string | null
-   min: number | null
-   max: number | null
-   sortCards: number | null
-   page: number | null
-   pageCount: number | null
-   cardsTotalCount: number | null
-   _id: string | null
+   cardAnswer: string
+   cardQuestion: string
+   cardsPack_id: string
+   min: number
+   max: number
+   sortCards: number
+   page: number
+   pageCount: number
+   cardsTotalCount: number
+   _id: string
 }

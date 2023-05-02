@@ -7,11 +7,11 @@ import Typography from "@mui/material/Typography";
 import Button from "@mui/material/Button";
 import {AddNewPackType} from "../../../../../n1-dall/table-api";
 import {
-  addNewPackTC,
-  fetchCardPacksTC,
-  pageAC,
-  removePackTC,
-  updatePackTC
+   addNewPackTC,
+   fetchCardPacksTC,
+   pageAC,
+   removePackTC,
+   updatePackTC
 } from "../../../../../n2-bll/table-reducer";
 import {TableParams} from "../TableParams/TableParams";
 import {HeadTable} from "./TableHead/HeadTable";
@@ -34,12 +34,7 @@ export const PacksListTable = () => {
    const dispatch = useAppDispatch()
 
    const paginationPageCount = Math.ceil(cardPacksTotalCount / pageCount)
-   // console.log(
-   //   pageCount, ' - pageCount, ',
-   //   selectedPage, ' - selectedPage, ',
-   //   cardPacksTotalCount, ' - cardPacksTotalCount, ',
-   //   minCardsCount, ' - min, ',
-   //   maxCardsCount, ' - max, ')
+
 
    const tableData = cardPacks.map(c => ({
       id: c._id,
@@ -78,7 +73,6 @@ export const PacksListTable = () => {
       dispatch(updatePackTC(data))
    }
 
-   // console.log('PackLIST : ' + 'min = ' + minCardsCount + ', max = ' + maxCardsCount)
    return (
       <Box sx={{
          height: 480,
